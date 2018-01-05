@@ -14,7 +14,7 @@
 			}
 			
 			#feedback{
-				margin: 7px 0px;
+				margin: 12px 0px;
 				font-size: 0.9rem;
 				text-transform: uppercase;
 			}
@@ -33,7 +33,7 @@
 						<input type="text" name="order" id="orderBox" autocomplete="off"/>
 					</div>
 					<div id="controls" class="">
-						<input type="submit" value="order" id="serveOrder" class="btn white black-text"/>
+						<input type="submit" value="order" id="makeOrder" class="btn white black-text"/>
 						<button id="clearOrder" class="btn white black-text">clear</button>
 					</div>
 				</form>
@@ -48,35 +48,44 @@
 		</div>
 		
 		<script>
-document.getElementById("serveOrder").addEventListener("click", serveOrder);
+document.getElementById("makeOrder").addEventListener("click", makeOrder);
 
 document.getElementById("clearOrder").addEventListener("click", clearOrder);
 
-function serveOrder(e){
+function makeOrder(e){
 	e.preventDefault();
 	
 	var xhr = new XMLHttpRequest();
 	
+	var feedback = document.getElementById("feedback");
 	var order = document.getElementById("orderBox").value;
+	
+	if (order.length >= 10){
+		feedback.innerHTML = "Sorry. We don't take orders this large.";
+		return
+	}
 	
 	xhr.open('GET', '/serve?order=' + order, true);
 	
 	xhr.onreadystatechange = function(){
 		if (this.readyState == 4){
-			document.getElementById("feedback").innerHTML = "here's your order";
-			document.getElementById("menu").innerHTML = this.responseText;
+			feedback.innerHTML = "here's your order";
+			serveOrder(this.responseText);
 		}
 	}
 	
 	xhr.send();
-	document.getElementById("feedback").innerHTML = "processing";
+	feedback.innerHTML = "processing";
 }
 
+function serveOrder(delivery){
+	
+}
 function clearOrder(e){
 	e.preventDefault();
 	document.getElementById("orderBox").value = "";
 	document.getElementById("menu").innerHTML = "";
-	document.getElementById("feedback").innerHTML = "";
+	feedback.innerHTML = "";
 }
 		</script>
 	</body>

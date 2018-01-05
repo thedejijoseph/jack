@@ -1,83 +1,142 @@
+#! ~/../usr/bin/python
+
 import os
 import sys
 import itertools
+import logging
+
+logging.basicConfig(
+	level = logging.DEBUG,
+	format = "%(asctime)s | %(levelname)s | %(message)s"
+)
 
 file = open("assets/words.txt").read()
 menu = set(file.splitlines())
 
-def boil(order):
-	# fetch all possiblities
-	# from length 3 to word length
-	
-	board = []
-	
-	for i in range(3, len(order) + 1):
-		options = itertools.permutations(order, i)
-		for entry in options:
-			dish = ''.join(entry)
-			if dish in menu:
-				board.append(dish)
-	
-	return board
+scramble = itertools.permutations
 
-def serve(board):
-	# re orders found possiblities
+def prepare(order):
+	# permutates given argument "string"
+	# returns a generator object of valid permutations
+	order = list(order)
 	
-	# trim repeats
-	bowl = list(set(board))
-	max_length = 0
+	size = len(order)
+	if size < 3 or size >= 15:
+		# unintelligible length
+		yield []
 	
-	tray = []
+	for i in range(3, size + 1):
+		yield [''.join(dish) for dish in scramble(order, i) if ''.join(dish) in menu]
+		
+def serve(bowls):
+	# re-orders argument alphabetically
+	# serve(arg) >> sorted_list
+	# where arg could be a generator or a list
+	queue = []
 	
-	# get the length of the longest word
-	for word in bowl:
-		if len(word) >= max_length:
-			max_length = len(word)
+	def spice(bowl):
+		bowl = list(set(bowl))
+		bowl.sort()
+		queue.extend(bowl)
 	
-	for l in range(3, max_length + 1):
-		select = [word for word in bowl if len(word) == l]
-		select.sort()
-		tray.extend(select)
+	if type(bowls) != list:
+		# arg is a generator
+		# (an assumption) tests for a generator?
+		for bowl in bowls:
+			if bowl is []:
+				pass
+			spice(bowl)
+		return queue
 	
-	return tray
+	# not a generator
+	bowl = bowls
+	spice(bowl)
+	return queue
 
-def fine_print(dish):
-	print(order, f"({len(dish)})")
-	print("-" * len(order))
+def fine_print(delivery):
+	# pretty prints arg to the terminal
+	# where delivery could be from prepare()
+	# or a complete list from serve()
 	
-	if len(dish) <= 6:
-		[print(">", i) for i in dish]
-		print("")
+	def compute(delivery):
+		# delivery should always be a non-empty list
+		if type(delivery) != list or delivery == []:
+			pass
 		
-	else:
-		split = len(dish) // 2
-		one, two = dish[:split], dish[split:]
+		# the trick is to get the optimal dimensions
+		# to split the delivery into
+		size = len(delivery)
 		
-		if len(two) > len(one):
-			one.append(two.pop(0))
+		# get the longest item
+		stretch = 0
+		for i in delivery:
+			if len(i) > stretch:
+				stretch = len(i)
 		
-		# we assume a max arg len of 7
-		width = 10
+		# terminal width and height
+		t_width = os.get_terminal_size().columns
+		t_height = os.get_terminal_size().lines
 		
-		# terminal_size = os.get_terminal_size().columns
-		# width = terminal_size // 2
+		# comfortable width
+		space = t_width // stretch + 2
+		depth = size // space
 		
-		for i in range(len(two)):
-			print(one[i].ljust(width), two[i].ljust(width))
+		if size > t_height:
+			rows = size
+		else:
+			rows = depth
 		
-		if len(one) > len(two):
-			print(one[-1].ljust(width))
+		stack = []
+		while delivery:
+			cut = delivery[:rows]
+			stack.append(cut)
+			delivery = delivery[rows:]
+			if delivery == []:
+				break
+		print("space, depth, size, len(stack)")
+		print("len(stack[0]), len(stack[-1]), rows, stretch")
+		print(space, depth, size, len(stack))
+		print(len(stack[0]), len(stack[-1]), rows, stretch)
 		
-		print("")
+		print("t_width, t_height")
+		print(t_width, t_height)
+	
+	if type(delivery) != list:
+		# delivery is a generator object
+		# (an assumption) how do i test for a generator?
+		for batch in delivery:
+			# sort generator delivery
+			batch = serve(batch)
+			compute(batch)
+		return
+	
+	# filled up tray, carry on
+	compute(delivery)
+	return
 
-def process(order):
-	board = boil(order)
-	tray = serve(board)
+def process(order, large=False):
+	size = len(order)
 	
-	return tray
+	# might include preprocesses
+	
+	if large:
+		# fine_print directly from prepare()
+		fine_print(prepare(order))
+		return
+	
+	dish = prepare(order)
+	delivery = serve(dish)
+	
+	return delivery
+
 
 if __name__ == "__main__":
 	app, *orders = sys.argv
+	
 	for order in orders:
-		dish = process(order)
-		fine_print(dish)
+		if len(order) >= 10:
+			# process(order, large=True)
+			print(f"can't compute {order}: too large")
+		else:
+			tray = process(order)
+			fine_print(tray)
