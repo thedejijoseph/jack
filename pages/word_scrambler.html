@@ -42,7 +42,7 @@
 				</div>
 			</div>
 			
-			<div id="menu" class="col s12 l8">
+			<div id="menu" class="col s12 l8 center grey lighten-3">
 				
 			</div>
 		</div>
@@ -79,7 +79,15 @@ function makeOrder(e){
 }
 
 function serveOrder(delivery){
+	delivery = JSON.parse(delivery);
+	serving = "<ul>";
 	
+	delivery.forEach(function(item) {
+		serving += "<li>" + item.toUpperCase() + "</li>";
+	});
+	
+	serving += "</ul>";
+	document.getElementById("menu").innerHTML = serving;
 }
 function clearOrder(e){
 	e.preventDefault();

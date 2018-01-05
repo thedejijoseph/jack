@@ -31,11 +31,13 @@ class ServiceHandler(BaseHandler):
 	def get(self):
 		# GET request received at /serve
 		order = self.get_query_argument('order')
+		logging.info(f"receiving order for {order}")
 		
 		# processing order
 		delivery = jack.process(order)
 		
 		# serving response
+		logging.info(f"sending order for {order}")
 		self.write(json.dumps(delivery))
 
 handlers = [
