@@ -11,8 +11,10 @@ class JPrepareTests(unittest.TestCase):
 		pass
 
 class JServeTests(unittest.TestCase):
-	def test_results(self):
-		# results must always be a list
+	"""Tests for the serve() function."""
+	
+	def test_serve_result(self):
+		"""Test that jack.serve() always returns a list."""
 		result = jack.serve(["ate", "eat", "tea", "eta",])
 		self.assertEqual(list, type(result))
 

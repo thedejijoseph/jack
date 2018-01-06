@@ -8,6 +8,9 @@
 		<style>
 			@import url("{{ static_url('css/materialize.min.css') }}");
 			
+			body{
+				font-family: serif;
+			}
 			#header{
 				margin: 10px 0px;;
 				font-size: 2em;
@@ -80,6 +83,14 @@ function makeOrder(e){
 
 function serveOrder(delivery){
 	delivery = JSON.parse(delivery);
+	var size = delivery.length;
+	var serving_size;
+	
+	if (size == 1){
+		serving_size = "serving";
+	}else{serving_size = "servings";}
+	
+	feedback.innerHTML += " (" + size + " " + serving_size + " long)"
 	serving = "<ul>";
 	
 	delivery.forEach(function(item) {
