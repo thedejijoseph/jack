@@ -68,7 +68,7 @@ function makeOrder(e){
 		return
 	}
 	
-	xhr.open('GET', '/serve?order=' + order, true);
+	xhr.open('GET', '/serve?order=' + order.toLowerCase(), true);
 	
 	xhr.onreadystatechange = function(){
 		if (this.readyState == 4){
