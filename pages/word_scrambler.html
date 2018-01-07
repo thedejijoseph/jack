@@ -55,6 +55,8 @@ document.getElementById("makeOrder").addEventListener("click", makeOrder);
 
 document.getElementById("clearOrder").addEventListener("click", clearOrder);
 
+document.getElementById("orderBox").addEventListener("keyup", uppercaseTransform);
+
 function makeOrder(e){
 	e.preventDefault();
 	
@@ -105,6 +107,13 @@ function clearOrder(e){
 	document.getElementById("orderBox").value = "";
 	document.getElementById("menu").innerHTML = "";
 	feedback.innerHTML = "";
+}
+
+function uppercaseTransform(){
+	var orderBox = document.getElementById("orderBox");
+	var ugly = orderBox.value;
+	var fine = ugly.toUpperCase();
+	orderBox.value = fine;
 }
 		</script>
 	</body>
