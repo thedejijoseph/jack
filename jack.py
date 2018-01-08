@@ -29,9 +29,10 @@ def prepare(order):
 		yield [''.join(dish) for dish in scramble(order, i) if ''.join(dish) in menu]
 		
 def serve(bowls):
-	# re-orders argument alphabetically
-	# serve(arg) >> sorted_list
-	# where arg could be a generator or a list
+	"""Re-orders argument alphabetically.
+	serve(arg) >> sorted_list
+	Where arg could be a generator or a list.
+	"""
 	queue = []
 	
 	def spice(bowl):
@@ -51,92 +52,140 @@ def serve(bowls):
 	# not a generator
 	bowl = bowls
 	spice(bowl)
+	
 	return queue
 
-def fine_print(delivery):
-	# pretty prints arg to the terminal
-	# where delivery could be from prepare()
-	# or a complete list from serve()
+def get_stack_size(delivery):
+	"""Compute feasible stack_size to slice the delivery into.
+	Returns a greater than zero integer, a comfortable stack_size.
+	Zero (0, 0) if there was an error.
+	"""
 	
-	def compute(delivery):
-		# delivery should always be a non-empty list
-		if type(delivery) != list or delivery == []:
-			pass
-		
-		# the trick is to get the optimal dimensions
-		# to split the delivery into
-		size = len(delivery)
-		
-		# get the longest item
-		stretch = 0
-		for i in delivery:
-			if len(i) > stretch:
-				stretch = len(i)
-		
-		# terminal width and height
-		t_width = os.get_terminal_size().columns
-		t_height = os.get_terminal_size().lines
-		
-		# comfortable width
-		space = t_width // stretch + 2
-		depth = size // space
-		
-		if size > t_height:
-			rows = size
-		else:
-			rows = depth
-		
-		stack = []
-		while delivery:
-			cut = delivery[:rows]
-			stack.append(cut)
-			delivery = delivery[rows:]
-			if delivery == []:
-				break
-		print("space, depth, size, len(stack)")
-		print("len(stack[0]), len(stack[-1]), rows, stretch")
-		print(space, depth, size, len(stack))
-		print(len(stack[0]), len(stack[-1]), rows, stretch)
-		
-		print("t_width, t_height")
-		print(t_width, t_height)
+	# delivery should always be a non-empty list
+	if type(delivery) != list or delivery == []:
+		return 0, 0
 	
-	if type(delivery) != list:
-		# delivery is a generator object
-		# (an assumption) how do i test for a generator?
-		for batch in delivery:
-			# sort generator delivery
-			batch = serve(batch)
-			compute(batch)
-		return
+	# the trick is to get the optimal dimensions
+	# to split the delivery into
+	size = len(delivery)
 	
-	# filled up tray, carry on
-	compute(delivery)
-	return
+	# get the longest item
+	stretch = 0
+	for i in delivery:
+		if len(i) > stretch:
+			stretch = len(i)
+	
+	# terminal width and height
+	t_width = os.get_terminal_size().columns
+	t_height = os.get_terminal_size().lines
+	
+	stack_size = t_width // (stretch + 2)
+	
+	return stack_size, stretch
+	
+def sort_by_x(delivery, stack_size):
+	"""
+	+ delivery sorted horizontally (not really).
+	
+	where x is the stack_size.
+	this returns a list of stacks, stack_size long.
+	"""
+	stacks = []
+	
+	while True:
+		cut = delivery[:stack_size]
+		stacks.append(cut)
+		delivery = delivery[stack_size:]
+		if delivery == []:
+			break
+	
+	return stacks
 
-def process(order, large=False):
-	size = len(order)
+def sort_by_y(delivery, stack_size):
+	"""
+	+ delivery sorted vertically (not really too).
 	
-	# might include preprocesses
+	lets say y is the stack_size here too
+	this returns a list of stacks with variable length,
+	but each stack is stack_size long.
+	"""
+	stacks = []
 	
-	if large:
-		# fine_print directly from prepare()
-		fine_print(prepare(order))
-		return
+	while True:
+		cut = delivery[:stack_size]
+		if stacks != []:
+			for item in cut:
+				stacks[cut.index(item)].append(item)
+		else:
+			for item in cut:
+				stacks.append([item])
+		delivery = delivery[stack_size:]
+		if delivery == []:
+			break
 	
-	dish = prepare(order)
-	delivery = serve(dish)
+	return stacks
+
+def fine_print(delivery):
+	"""Pretty-print content of the stack.
+	stacks is a list of lists (stacks)
+	"""
 	
-	return delivery
+	stack_size, stretch = get_stack_size(delivery)
+	stacks = sort_by_x(delivery, stack_size)
+	
+	# i think y looks better than x
+	
+	
+	for stack in stacks:
+		for item in stack:
+			print(item.ljust(stretch + 2), end="")
+		print("")
+	
+	print("")
+
+def process(order, chain="web", large=False):
+	"""Jack's public face."""
+	
+	if chain == "web":
+		# adding aysnc, push order to a new thread
+		# [shrug] thats what i could come up with
+		
+		dish = prepare(order)
+		serving = serve(dish)
+		
+		return serving
+	
+	elif chain == "terminal":
+		# we do it how we know how to
+		# multi staging, clarified
+		
+		# normalize
+		order = order.lower()
+		line_count = 14 + len(order)
+		
+		# looking into fine_print.ing larger
+		# orders straight from the generator
+		
+		dish = prepare(order)
+		serving = serve(dish)
+		
+		if serving == []:
+			feedback = f"sorry, we couldnt process this order: '{order}'"
+			
+		elif len(serving) == 1:
+			feedback = "a special dish"
+		
+		else:
+			feedback = f"{len(serving)} servings"
+		
+		print("an order for:", order)
+		print("=" * line_count)
+		print(feedback)
+		fine_print(serving)
 
 
 if __name__ == "__main__":
 	app, *orders = sys.argv
 	
 	for order in orders:
-		if len(order) >= 10:
-			# process(order, large=True)
-			print(f"can't compute {order}: too large")
-		else:
-			tray = process(order)
-			fine_print(tray)
+		process(order, chain="terminal")
