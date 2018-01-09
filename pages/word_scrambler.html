@@ -50,72 +50,8 @@
 			</div>
 		</div>
 		
-		<script>
-document.getElementById("makeOrder").addEventListener("click", makeOrder);
-
-document.getElementById("clearOrder").addEventListener("click", clearOrder);
-
-document.getElementById("orderBox").addEventListener("keyup", uppercaseTransform);
-
-function makeOrder(e){
-	e.preventDefault();
-	
-	var xhr = new XMLHttpRequest();
-	
-	var feedback = document.getElementById("feedback");
-	var order = document.getElementById("orderBox").value;
-	
-	if (order.length >= 10){
-		feedback.innerHTML = "Sorry. We don't take orders this large.";
-		return
-	}
-	
-	xhr.open('GET', '/serve?order=' + order.toLowerCase(), true);
-	
-	xhr.onreadystatechange = function(){
-		if (this.readyState == 4){
-			feedback.innerHTML = "here's your order";
-			serveOrder(this.responseText);
-		}
-	}
-	
-	xhr.send();
-	feedback.innerHTML = "processing";
-}
-
-function serveOrder(delivery){
-	delivery = JSON.parse(delivery);
-	var size = delivery.length;
-	var serving_size;
-	
-	if (size == 1){
-		serving_size = "serving";
-	}else{serving_size = "servings";}
-	
-	feedback.innerHTML += " (" + size + " " + serving_size + " long)"
-	serving = "<ul>";
-	
-	delivery.forEach(function(item) {
-		serving += "<li>" + item.toUpperCase() + "</li>";
-	});
-	
-	serving += "</ul>";
-	document.getElementById("menu").innerHTML = serving;
-}
-function clearOrder(e){
-	e.preventDefault();
-	document.getElementById("orderBox").value = "";
-	document.getElementById("menu").innerHTML = "";
-	feedback.innerHTML = "";
-}
-
-function uppercaseTransform(){
-	var orderBox = document.getElementById("orderBox");
-	var ugly = orderBox.value;
-	var fine = ugly.toUpperCase();
-	orderBox.value = fine;
-}
-		</script>
+		<script src="{{ static_url('js/jquery-3.2.1.min.js') }}"></script>
+		<script src="{{ static_url('js/jack.js') }}"></script>
 	</body>
 
 </html>
