@@ -14,6 +14,8 @@ file = open("assets/words.txt").read()
 menu = set(file.splitlines())
 
 scramble = itertools.permutations
+table = {}
+cache = []
 
 def prepare(order):
 	# permutates given argument "string"
@@ -150,8 +152,15 @@ def process(order, chain="web", large=False):
 		# adding aysnc, push order to a new thread
 		# [shrug] thats what i could come up with
 		
+		if order in cache:
+			return table.get(order)
+		
+		cache.append(order)
+		
 		dish = prepare(order)
 		serving = serve(dish)
+		
+		table[order] = serving
 		
 		return serving
 	
