@@ -33,13 +33,13 @@ class ServiceHandler(BaseHandler):
 	def get(self):
 		# GET request received at /serve
 		order = self.get_query_argument('order')
-		logging.debug(f"receiving order for {order}")
+		logging.debug(f"received order: {order}")
 		
 		# processing order
 		delivery = jack.process(order, chain="web")
 		
 		# serving response
-		logging.debug(f"sending order for {order}")
+		logging.debug(f"sending order: {order}")
 		self.write(json.dumps(delivery))
 
 handlers = [
