@@ -4,6 +4,7 @@ import os
 import sys
 import itertools
 import logging
+import threading
 
 logging.basicConfig(
 	level = logging.DEBUG,
@@ -135,8 +136,7 @@ def fine_print(delivery):
 	stack_size, stretch = get_stack_size(delivery)
 	stacks = sort_by_x(delivery, stack_size)
 	
-	# i think y looks better than x
-	
+	# i think y looks better than x though
 	
 	for stack in stacks:
 		for item in stack:
@@ -149,8 +149,7 @@ def process(order, chain="web", large=False):
 	"""Jack's public face."""
 	
 	if chain == "web":
-		# adding aysnc, push order to a new thread
-		# [shrug] thats what i could come up with
+		# implement static caches
 		
 		if order in cache:
 			return table.get(order)
@@ -165,31 +164,28 @@ def process(order, chain="web", large=False):
 		return serving
 	
 	elif chain == "terminal":
-		# we do it how we know how to
-		# multi staging, clarified
-		
 		# normalize
 		order = order.lower()
-		line_count = 14 + len(order)
 		
-		# looking into fine_print.ing larger
+		# to-do:
+		# fine_print.ing larger
 		# orders straight from the generator
 		
 		dish = prepare(order)
 		serving = serve(dish)
 		
 		if serving == []:
-			feedback = f"sorry, we couldnt process this order: '{order}'"
+			# how about a smarter feedback
+			feedback = f"{order}: 0 servings"
 			
 		elif len(serving) == 1:
-			feedback = "a special dish"
+			feedback = f"{order}: a special!"
 		
 		else:
-			feedback = f"{len(serving)} servings"
+			feedback = f"{order}: {len(serving)} servings"
 		
-		print("an order for:", order)
-		print("=" * line_count)
 		print(feedback)
+		print("=" * 12)
 		fine_print(serving)
 
 
