@@ -5,30 +5,29 @@ import sys
 import itertools
 import logging
 import threading
+import types
 
 logging.basicConfig(
 	level = logging.DEBUG,
 	format = "%(asctime)s | %(levelname)s | %(message)s"
 )
 
-file = open("assets/words.txt").read()
-menu = set(file.splitlines())
+source_file = open("assets/words.txt").read()
+menu = set(source_file.splitlines())
 
 scramble = itertools.permutations
 table = {}
 cache = []
 
 def prepare(order):
-	# permutates given argument "string"
-	# returns a generator object of valid permutations
-	order = list(order)
-	
+	"""Permutates given argument (string)
+	returns a generator object of valid permutations.
+	"""
 	size = len(order)
-	if size < 3 or size >= 15:
-		# unintelligible length
-		yield []
+	# removed size checks
+	# even though 10+ sizes take really long
 	
-	for i in range(3, size + 1):
+	for i in range(2, size + 1):
 		yield [''.join(dish) for dish in scramble(order, i) if ''.join(dish) in menu]
 		
 def serve(bowls):
@@ -43,9 +42,8 @@ def serve(bowls):
 		bowl.sort()
 		queue.extend(bowl)
 	
-	if type(bowls) != list:
+	if isinstance(bowls, types.GeneratorType):
 		# arg is a generator
-		# (an assumption) tests for a generator?
 		for bowl in bowls:
 			if bowl is []:
 				pass
@@ -145,52 +143,41 @@ def fine_print(delivery):
 	
 	print("")
 
-def process(order, chain="web", large=False):
+def process(order):
 	"""Jack's public face."""
+	# just for web access
 	
-	if chain == "web":
-		# implement static caches
-		
-		if order in cache:
-			return table.get(order)
-		
-		cache.append(order)
-		
-		dish = prepare(order)
-		serving = serve(dish)
-		
-		table[order] = serving
-		
-		return serving
+	pass
+
+def quick_access(order):
+	# just for terminal access
+	# nonneed to complicate things
 	
-	elif chain == "terminal":
-		# normalize
-		order = order.lower()
+	# normalize
+	order = order.lower()
+	
+	# to-do:
+	# fine_print.ing larger
+	# orders straight from the generator
+	
+	dish = prepare(order)
+	serving = serve(dish)
+	
+	if serving == []:
+		# how about a smarter feedback
+		feedback = f"{order}: 0 servings"
 		
-		# to-do:
-		# fine_print.ing larger
-		# orders straight from the generator
-		
-		dish = prepare(order)
-		serving = serve(dish)
-		
-		if serving == []:
-			# how about a smarter feedback
-			feedback = f"{order}: 0 servings"
-			
-		elif len(serving) == 1:
-			feedback = f"{order}: a special!"
-		
-		else:
-			feedback = f"{order}: {len(serving)} servings"
-		
-		print(feedback)
-		print("=" * 12)
-		fine_print(serving)
-
-
+	elif len(serving) == 1:
+		feedback = f"{order}: a special!"
+	
+	else:
+		feedback = f"{order}: {len(serving)} servings"
+	
+	print(feedback)
+	print("=" * 12)
+	fine_print(serving)
 if __name__ == "__main__":
 	app, *orders = sys.argv
 	
 	for order in orders:
-		process(order, chain="terminal")
+		quick_access(order)

@@ -1,0 +1,98 @@
+worker.py
+---
+
+there are 113809 words
+some or most of these words can form other words
+eg: stale >> tea, eat, ate, teal, seat late.. among others
+
+task:
+find all the words possible for [from] each word
+save this to a text file
+
+
+quick_pick.py
+---
+
+most likely, a word, better still a scrambled bunch of
+letters, asked to be straightened out is a word
+eg: elats >> slate or steal or tales...
+
+i say most likely because of situations such as a scrabble
+game or just curiosity to see if words, letters, jumbled up
+can form a word, words or even more from that jumble
+shorter than the jumble
+eg: xeta >> tax, eat, tea, axe.. no four lettered word
+
+but again, this is most likely rare
+
+in the case that a scenario falls within my stipulation,
+that is, it is not an exception [xeta], this algorithm
+ought to speed up lookup / process time
+
+to ensure this is the case, the algorithm wuld be better
+suited for words (jumbles, orders..) that would or
+certainly take a long time to process.
+usually, words ten lettered or more
+
+implementation:
+---
+this works with / assumes that a prebuilt collection of
+already scrambled words. scrambled, that is, we know all
+the words that can be gotten from a particular word
+
+usually, or expectantly, a valid word is being asked to
+be scrambled: get all possible words, in this case, we just
+fetch and return from the pool of already scrambled words
+
+when this is not the case, we try the quick_pick
+follow...
+	request: "elats"
+	
+	quick_pick-ed, we can determine that "steal" or "stale"
+	or more can straight up be gotten from "elats"
+	
+	now instead of carrying on re-scrambling a smaller
+	selection of letters, "elat" >> "teal", "late"...
+	we already know all these can be formed from the valid
+	words we already know can be formed from the jumbled
+	request
+	
+	that is:
+	return the scrambled entry for "steal" to the request
+	for "elats". or "stale", same difference!
+
+hiccup:
+---
+but again, this might not be the case
+eg: "phaxte" doesnt have a six lettered valid word -does it?
+
+we could do some reduction [trial and error] to see if
+there's a valid five lettered word and return its scrambled
+entry
+	there is: great!
+	there isnt: how about a three lettered valid word
+
+no doubt, continuing like this would be the same thing, if
+not slower than just processing it like that and returning
+what we find valid
+
+flashback:
+again, this is better suited for really large requests / 
+orders
+
+and we could do the reduction up to a certain point
+where continuing would be more or less the same thing
+as straight up scrambling the thing
+
+the same point (number of letters) we feel is reasonably
+large enough to engage quick_pick in the first place,
+10 letters
+
+and if quick_pick finds to valid option up to this point,
+we do a scramble for valids lower than this point and
+"say nada".. we return what we find
+
+[no point scrambling the whole thing again, we know there
+are no valid words above that point] besides..
+
+below that point, we assume, has a reasonable process time
