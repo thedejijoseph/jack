@@ -151,7 +151,7 @@ def process(order):
 
 def quick_access(order):
 	# just for terminal access
-	# nonneed to complicate things
+	# no need to complicate things
 	
 	# normalize
 	order = order.lower()
@@ -176,6 +176,8 @@ def quick_access(order):
 	print(feedback)
 	print("=" * 12)
 	fine_print(serving)
+
+
 if __name__ == "__main__":
 	app, *orders = sys.argv
 	
