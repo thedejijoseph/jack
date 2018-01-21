@@ -4,3 +4,6 @@ __pycache__/
 # ignore cache file
 assets/saved.txt
 
+# ignore worker log
+assets/worker.log
+

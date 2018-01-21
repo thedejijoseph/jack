@@ -36,7 +36,7 @@ class ServiceHandler(BaseHandler):
 		logging.debug(f"received order: {order}")
 		
 		# processing order
-		delivery = jack.process(order, chain="web")
+		delivery = jack.process(order)
 		
 		# serving response
 		logging.debug(f"sending order: {order}")

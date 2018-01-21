@@ -96,7 +96,7 @@ def save():
 					# close the threads!
 					for wrkr in workers:
 						wrkr.join()
-					
+					logging.info("all done!")
 					break
 
 def start():
@@ -108,7 +108,7 @@ def start():
 	all_words = set(words_file.read().splitlines())
 	words_file.close()
 	
-	source_file = open("assets/1.txt", "r")
+	source_file = open("assets/2.txt", "r")
 	save_file = open("assets/saved.txt", "r")
 	
 	logging.info("setting up")

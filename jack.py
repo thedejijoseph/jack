@@ -6,6 +6,7 @@ import itertools
 import logging
 import threading
 import types
+import json
 
 logging.basicConfig(
 	level = logging.DEBUG,
@@ -16,8 +17,7 @@ source_file = open("assets/words.txt").read()
 menu = set(source_file.splitlines())
 
 scramble = itertools.permutations
-table = {}
-cache = []
+cache = {}
 
 def prepare(order):
 	"""Permutates given argument (string)
@@ -143,11 +143,68 @@ def fine_print(delivery):
 	
 	print("")
 
+def repool():
+	global pool
+	pool = set(cache.keys())
+
+def load_cache():
+	global pool
+	cache_file_id = "assets/saved.txt"
+	cache_file = open(cache_file_id, "r")
+	
+	open_cache = cache_file.read().splitlines()
+	for line in open_cache:
+		item, entry = line.split(": ")
+		cache[item] = serve(json.loads((entry)))
+	
+	repool()
+
+def cache_this(item, entry):
+	"""Add a just processed order to the cache"""
+	
+	cache[item] = entry
+	# redo the pool
+	repool()
+
+def engage(order):
+	"""Perform the work flow from order to delivery."""
+	
+	bowl = prepare(order)
+	serving = serve(bowl)
+	
+	cache_this(order, serving)
+	return serving
+
+def quick_look(order):
+	"""See if the word is just scrambled"""
+	
+	options = [''.join(i) for i in scramble(order)]
+	for e in options:
+		if e in menu:
+			return e
+	
+	return None
+
 def process(order):
 	"""Jack's public face."""
 	# just for web access
 	
-	pass
+	# is the order a valid word
+	if order in pool:
+		return cache[order]
+	
+	# never before processed
+	# see if its a valid word just scrambled
+	# is it: if its in the cache: good
+	# if not: process it
+	check = quick_look(order)
+	if check:
+		return cache.get(check[0], engage(order))
+	
+	return engage(order)
+	
+	# todo:
+		# convergence
 
 def quick_access(order):
 	# just for terminal access
@@ -177,6 +234,7 @@ def quick_access(order):
 	print("=" * 12)
 	fine_print(serving)
 
+load_cache()
 
 if __name__ == "__main__":
 	app, *orders = sys.argv
