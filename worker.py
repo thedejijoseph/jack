@@ -14,6 +14,7 @@ import json
 from itertools import permutations as scramble
 
 logging.basicConfig(
+	filename = "assets/worker.log",
 	level = logging.DEBUG,
 	format = "%(asctime)s | %(levelname)s | %(message)s"
 )
@@ -53,7 +54,7 @@ save_file.close() # to be opened again for writing
 words_file.close()
 
 def process(word):
-	# get all posible words from this word
+	# get all possible words from this word
 	word = word.lower()
 	perms = [scramble(word, i) for i in range(len(word)+1)]
 	
