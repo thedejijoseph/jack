@@ -1,3 +1,6 @@
 __pycache__/
-./assets/saved.txt
+
+
+# ignore cache file
+assets/saved.txt
 
