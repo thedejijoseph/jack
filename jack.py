@@ -37,22 +37,29 @@ def serve(bowls):
 	"""
 	queue = []
 	
-	def spice(bowl):
-		bowl = list(set(bowl))
-		bowl.sort()
-		queue.extend(bowl)
-	
 	if isinstance(bowls, types.GeneratorType):
 		# arg is a generator
+		# already cut into bowls of same size
 		for bowl in bowls:
 			if bowl is []:
 				pass
-			spice(bowl)
+			bl = list(set(bowl))
+			bl.sort()
+			queue.extend(bl)
 		return queue
 	
 	# not a generator
-	bowl = bowls
-	spice(bowl)
+	# cut list into lists of the same size
+	
+	stretch = 0
+	for i in bowls:
+		if len(i) > stretch:
+			stretch = len(i)
+	
+	for i in range(2, stretch + 1):
+		grp = [x for x in filter(lambda k: True if i == len(k) else False, bowls)]
+		grp.sort()
+		queue.extend(grp)
 	
 	return queue
 
@@ -148,7 +155,7 @@ def repool():
 	pool = set(cache.keys())
 
 def load_cache():
-	global pool
+	logging.debug("loading cache")
 	cache_file_id = "assets/saved.txt"
 	cache_file = open(cache_file_id, "r")
 	
@@ -156,14 +163,13 @@ def load_cache():
 	for line in open_cache:
 		item, entry = line.split(": ")
 		cache[item] = serve(json.loads((entry)))
-	
-	repool()
+		repool()
 
 def cache_this(item, entry):
 	"""Add a just processed order to the cache"""
 	
 	cache[item] = entry
-	# redo the pool
+	# redo the pool (index)
 	repool()
 
 def engage(order):
@@ -234,7 +240,9 @@ def quick_access(order):
 	print("=" * 12)
 	fine_print(serving)
 
-load_cache()
+# interrupting terminal access
+if __name__ != "__main__":
+	threading.Thread(target=load_cache).start()
 
 if __name__ == "__main__":
 	app, *orders = sys.argv
