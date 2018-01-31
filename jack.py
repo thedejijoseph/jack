@@ -156,7 +156,13 @@ def repool():
 
 def load_cache():
 	logging.debug("loading cache")
-	cache_file_id = "assets/saved.txt"
+	
+	try:
+		cache_file_id = "assets/saved.txt"
+	except:
+		logging.debug("cache not found")
+		return
+	
 	cache_file = open(cache_file_id, "r")
 	
 	open_cache = cache_file.read().splitlines()
