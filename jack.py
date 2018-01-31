@@ -155,15 +155,15 @@ def repool():
 	pool = set(cache.keys())
 
 def load_cache():
-	logging.debug("loading cache")
 	cache_file_id = "assets/saved.txt"
 	cache_file = open(cache_file_id, "r")
 	
-	open_cache = cache_file.read().splitlines()
-	for line in open_cache:
-		item, entry = line.split(": ")
-		cache[item] = serve(json.loads((entry)))
-		repool()
+	while True:
+		open_cache = cache_file.read().splitlines()
+		for line in open_cache:
+			item, entry = line.split(": ")
+			cache[item] = serve(json.loads((entry)))
+			repool()
 
 def cache_this(item, entry):
 	"""Add a just processed order to the cache"""
@@ -196,6 +196,7 @@ def process(order):
 	# just for web access
 	
 	# is the order a valid word
+	print(1)
 	if order in pool:
 		return cache[order]
 	
@@ -203,10 +204,12 @@ def process(order):
 	# see if its a valid word just scrambled
 	# is it: if its in the cache: good
 	# if not: process it
+	print(2)
 	check = quick_look(order)
 	if check:
 		return cache.get(check[0], engage(order))
 	
+	print(3)
 	return engage(order)
 	
 	# todo:

@@ -15,7 +15,7 @@ import time
 from itertools import permutations as scramble
 
 logging.basicConfig(
-	filename = "assets/worker.log",
+	#filename = "assets/worker.log",
 	level = logging.DEBUG,
 	format = "%(asctime)s | %(levelname)s | %(message)s"
 )
@@ -54,6 +54,7 @@ def process(word):
 def worker():
 	while True:
 		if work_queue.empty() is True:
+			worker_checkout.append(1)
 			break
 		
 		else:
@@ -66,6 +67,18 @@ def worker():
 			logging.info(f"done: {item}")
 			
 			work_queue.task_done()
+
+progress = []
+def progress_report():
+	# give feedback on workers progress
+	so_far = len(progress)
+	all = len(undone)
+	left = all - so_far
+	
+	report = so_far / all * 100
+	report = "%.2f" %report
+	
+	print(f"{so_far} out of {all}: {report}%")
 
 def save():
 	# all the work left to do has been queued
@@ -81,35 +94,45 @@ def save():
 			# handled this way for assurance that
 			# items saved (written to file) are saved
 			
-			save_file = open("assets/saved.txt", "a")
+			save_file = open(save_file_path, "a")
 			save_file.write(package + "\n")
 			save_file.close()
+			
+			progress.append(1)
+			progress_report()
 		
 		elif save_queue.empty() is True:
-			# check if all the work is done
+			# check if all work's been assigned
 			if work_queue.empty():
-				# check again if all the work's been saved
-				time.sleep(3)
-				if save_queue.empty():
-					# if this checks out, workers
-					# would have stopped
-					# close the threads!
-					for wrkr in workers:
-						wrkr.join()
-					logging.info("all done!")
-					break
+				# check to see if all the workers are done
+				if len(worker_checkout) == no_of_workers:
+					# check to see if all the work's been saved
+					if save_queue.empty:
+						for wrkr in workers:
+							wrkr.join()
+						logging.info("all done!")
+						break
+							
 
 def start():
 	global done, undone, all_words
 	global work_queue, save_queue
 	global no_of_workers, workers
+	global worker_checkout
+	
+	# settings
+	print("where's what we need to work on")
+	source_file_path = input("source file (rel path): ./")
+	
+	print("where do we save our work to")
+	save_file_path = input("save file (rel path): ./")
 	
 	words_file = open("assets/words.txt", "r")
 	all_words = set(words_file.read().splitlines())
 	words_file.close()
 	
-	source_file = open("assets/2.txt", "r")
-	save_file = open("assets/saved.txt", "r")
+	source_file = open(source_file_path, "r")
+	save_file = open(save_file_path, "r")
 	
 	logging.info("setting up")
 	source = source_file.read().splitlines()
@@ -133,6 +156,7 @@ def start():
 	# start workers
 	no_of_workers = 16
 	workers = []
+	worker_checkout = []
 
 	logging.info("queuing work")
 	for item in undone:
