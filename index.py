@@ -6,9 +6,14 @@ from tornado import gen
 
 import os
 import json
+import logging
 
 import jack
 
+logging.basicConfig(
+	level = logging.DEBUG,
+	format = "%(asctime)s | %(levelname)s | %(message)s",
+)
 
 from tornado.options import define
 define("port", default=5000, help="open at given port", type=int)
