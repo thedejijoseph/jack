@@ -50,6 +50,8 @@ except FileNotFoundError:
 	# create empty file
 	save_file = open(save_file_path, "w")
 	save_file.close()
+	
+	saved = []
 
 # source file
 if __name__ == "__main__":
