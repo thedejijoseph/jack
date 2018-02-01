@@ -11,40 +11,123 @@ import logging
 import queue
 import json
 import time
+import os
+import sys
 
 from itertools import permutations as scramble
 
-logging.basicConfig(
-	filename = "assets/worker.log",
-	level = logging.DEBUG,
-	format = "%(asctime)s | %(levelname)s | %(message)s"
-)
+# configure logger
+
+# run through setup
+
+# first: word bank
+try:
+	word_bank_path = "assets/words.txt"
+	word_bank_file = open(word_bank_path, "r")
+	word_bank = set(word_bank_file.read().splitlines())
+	
+	word_bank_file.close()
+except:
+	print(f"error locating word bank: {word_bank_path}")
+	raise
+
+# the cache file
+try:
+	save_file_path = "assets/saved.txt"
+	save_file = open(save_file_path, "r")
+	saved = save_file.read().splitlines()
+	
+	save_file.close()
+except FileNotFoundError:
+	print(f"error locating cache file: {save_file_path}")
+	print("creating one")
+	
+	try:
+		# try to create an 'assets' dir
+		os.mkdir("assets")
+	except:
+		pass
+	# create empty file
+	save_file = open(save_file_path, "w")
+	save_file.close()
+
+# source file
+if __name__ == "__main__":
+	print("which source file (1, 2, 3, 4).txt")
+	source_file_path = "assets/" + input("assets/")
+	
+	try:
+		source_file = open(source_file_path, "r")
+		source = source_file.read().splitlines()
+		
+		source_file.close()
+	except:
+		print(f"error locating source file: {source_file_path}")
+		raise
+else:
+	# build a stack of the sources
+	try:
+		f1 = open("assets/1.txt", "r")
+		f2 = open("assets/2.txt", "r")
+		f3 = open("assets/3.txt", "r")
+		f4 = open("assets/4.txt", "r")
+		
+		stack = []
+		stack.extend(f1.read().splitlines())
+		stack.extend(f2.read().splitlines())
+		stack.extend(f3.read().splitlines())
+		stack.extend(f4.read().splitlines())
+		
+		f1.close()
+		f2.close()
+		f3.close()
+		f4.close()
+		
+		source = stack
+	except:
+		print("error building stack")
+		raise
 
 def is_undone(item):
 	return True if item not in done else False
 
-def load_cache(cache_file):
-	# where cache_file is a txt file
-	# return a dict of its content
-	cache = {}
-	content = cache_file.splitlines()
+# build a list of saved items (done)
+done = []
+for item in saved:
+	key, value = item.split(": ")
+	done.append(key)
+
+done = set(done)
+undone = [i for i in filter(is_undone, source)]
 	
-	for line in content:
-		item, entry = line.split(": ")
-		cache[item] = json.loads(entry)
+if undone == []:
+	print("source is all clear")
+	sys.exit()
+
 	
-	return cache
+# open up queue objects
+work_queue = queue.Queue()
+save_queue = queue.Queue()
+
+# workers
+no_of_workers = 16
+workers = []
+worker_checkout = []
+
+def stop_workers():
+	for wrkr in workers:
+		wrkr.join()
 
 def process(word):
 	# get all possible words from this word
 	word = word.lower()
-	perms = [scramble(word, i) for i in range(len(word)+1)]
+	scrambles = [scramble(word, i) for i in range(len(word)+1)]
 	
 	found = []
-	for collct in perms:
-		for possble in collct:
-			word = ''.join(possble)
-			if word in all_words:
+	for group in scrambles:
+		for option in group:
+			word = ''.join(option)
+			if word in word_bank:
 				found.append(word)
 	
 	found = set(found)
@@ -54,6 +137,7 @@ def process(word):
 def worker():
 	while True:
 		if work_queue.empty() is True:
+			worker_checkout.append(1)
 			break
 		
 		else:
@@ -61,6 +145,7 @@ def worker():
 			
 			logging.info(f"work: {item}")
 			entry = process(item)
+			
 			package = item + ": " + json.dumps(entry)
 			save_queue.put(package)
 			logging.info(f"done: {item}")
@@ -68,14 +153,13 @@ def worker():
 			work_queue.task_done()
 
 def save():
-	# all the work left to do has been queued
-	# work has started and results are being queued
-	# start saving!
+	# all the work has been queued and started
+	# results are being queued
 
 	while True:
 		if save_queue.empty() is False:
 			package = save_queue.get()
-			item = package.split(': ')[0]
+			item = package.split(": ")[0]
 			logging.info(f"save: {item}")
 			
 			# handled this way for assurance that
@@ -88,52 +172,14 @@ def save():
 		elif save_queue.empty() is True:
 			# check if all the work is done
 			if work_queue.empty():
-				# check again if all the work's been saved
-				time.sleep(3)
-				if save_queue.empty():
-					# if this checks out, workers
-					# would have stopped
-					# close the threads!
-					for wrkr in workers:
-						wrkr.join()
+				# check if all the workers are done with
+				# their work
+				if len(worker_checkout) == no_of_workers:
+					stop_workers()
 					logging.info("all done!")
 					break
 
 def start():
-	global done, undone, all_words
-	global work_queue, save_queue
-	global no_of_workers, workers
-	
-	words_file = open("assets/words.txt", "r")
-	all_words = set(words_file.read().splitlines())
-	words_file.close()
-	
-	source_file = open("assets/2.txt", "r")
-	save_file = open("assets/saved.txt", "r")
-	
-	logging.info("setting up")
-	source = source_file.read().splitlines()
-	saved = load_cache(save_file.read())
-	
-	done = saved.keys()
-	undone = [i for i in filter(is_undone, source)]
-	
-	if undone == []:
-		logging.info("all clear!")
-		return
-
-	# now we have a list of items left to work on
-	source_file.close()
-	save_file.close() # to be opened again for writing
-	
-	# open up queue objects
-	work_queue = queue.Queue()
-	save_queue = queue.Queue()
-	
-	# start workers
-	no_of_workers = 16
-	workers = []
-
 	logging.info("queuing work")
 	for item in undone:
 		work_queue.put(item)
