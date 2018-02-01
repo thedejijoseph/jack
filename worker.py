@@ -211,7 +211,11 @@ def start():
 		
 		workers.append(wrkr)
 	
-	save()
+	try:
+		save()
+	except:
+		# still doesnt work
+		stop_workers()
 
 if __name__ == "__main__":
 	start()
