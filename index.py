@@ -6,16 +6,9 @@ from tornado import gen
 
 import os
 import json
-import logging
 
 import jack
 
-logging.basicConfig(
-	level = logging.DEBUG,
-	format = '%(asctime)s | %(levelname)s | %(message)s'
-)
-
-logging.disable(logging.DEBUG)
 
 from tornado.options import define
 define("port", default=5000, help="open at given port", type=int)
@@ -31,15 +24,17 @@ class IndexHandler(BaseHandler):
 class ServiceHandler(BaseHandler):
 	@gen.coroutine
 	def get(self):
-		# GET request received at /serve
+		# request received at /serve
 		order = self.get_query_argument('order')
-		logging.debug(f"received order: {order}")
 		
 		# processing order
-		delivery = jack.process(order)
+		package = jack.process(order)
 		
+		delivery = {
+			"time_taken": package[0],
+			"serving": package[1]
+		}
 		# serving response
-		logging.debug(f"sending order: {order}")
 		self.write(json.dumps(delivery))
 
 handlers = [
