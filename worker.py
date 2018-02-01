@@ -114,6 +114,10 @@ no_of_workers = 16
 workers = []
 worker_checkout = []
 
+proceed = input("proceed (y/n): ")
+if proceed == "n":
+	sys.exit()
+
 def stop_workers():
 	for wrkr in workers:
 		wrkr.join()
