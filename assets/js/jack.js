@@ -8,30 +8,25 @@ var feedback = $('#feedback');
 function makeOrder(e){
 	e.preventDefault();
 	
-	var xhr = new XMLHttpRequest();
-	
-	
 	var order = $('input#orderBox').val().toLowerCase();
 	if (order.length >= 11){
 		feedback.html("Sorry. We don't take orders this large.");
 		return
 	}
-	
-	xhr.open('GET', '/serve?order=' + order, true);
-	
-	xhr.onreadystatechange = function(){
-		if (this.readyState == 4){
-			// our order is here
-			serveOrder(order, this.responseText);
-		}
-	}
-	
-	xhr.send();
 	feedback.html("processing");
+	$.ajax("/serve",
+		{
+			method: "GET",
+			data: {
+					"order": order
+				},
+			success: serveOrder,
+		});
 }
 
-function serveOrder(order, delivery){
+function serveOrder(delivery, status, xhr){
 	package = JSON.parse(delivery);
+	var order = $("#orderBox").val()
 	
 	var time_taken = package["time_taken"];
 	var serving = package ["serving"];
@@ -48,13 +43,14 @@ function serveOrder(order, delivery){
 		unit = "second"
 	}
 	
-	msg = "your order: " + order + "<br/>" + 
-		" (" + size + " " + serving_size + " long)" + 
-		" [" + time_taken + " " + unit + "]"
+	msg = order + ": " + 
+		size + " " + serving_size + " long" + 
+		" (" + time_taken + " " + unit + ")"
 	
 	feedback.html(msg)
 	
 	$('#menu').html("working on it.. rendering that is");
+	// $('#menu').text(serving)
 }
 
 function clearOrder(e){

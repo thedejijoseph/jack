@@ -30,7 +30,7 @@ class ServiceHandler(BaseHandler):
 	@gen.coroutine
 	def get(self):
 		# request received at /serve
-		order = self.get_query_argument('order')
+		order = self.get_argument('order')
 		
 		# processing order
 		package = jack.process(order)
