@@ -1,5 +1,5 @@
 import unittest
-import jack
+from .. import jack
 
 # im really fed up with manually testing all the lines i write
 # lets get to it

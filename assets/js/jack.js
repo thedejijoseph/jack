@@ -59,13 +59,5 @@ function clearOrder(e){
 	$("#feedback").text("how about an order");
 	$("#menu").html("");
 }
-
-// upper case transform is laggy
-$( "#orderBox" ).on( "keyup", function() {
-  $( this ).val(function( i, val ) {
-    return val.toUpperCase();
-  });
-});
-
 // close document.ready function()
 });
