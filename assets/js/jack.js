@@ -59,5 +59,6 @@ function clearOrder(e){
 	$("#feedback").text("how about an order");
 	$("#menu").html("");
 }
+
 // close document.ready function()
 });
