@@ -6,6 +6,7 @@ from tornado import gen
 
 import os
 import json
+import time
 import logging
 
 import jack
@@ -16,7 +17,7 @@ logging.basicConfig(
 )
 
 from tornado.options import define
-define("port", default=5000, help="open at given port", type=int)
+define("port", default=3303, help="open at given port", type=int)
 
 class BaseHandler(tornado.web.RequestHandler):
 	pass
@@ -29,22 +30,26 @@ class IndexHandler(BaseHandler):
 class ServiceHandler(BaseHandler):
 	@gen.coroutine
 	def get(self):
-		# request received at /serve
 		order = self.get_argument('order')
-		
-		# processing order
 		package = jack.process(order)
 		
 		delivery = {
 			"time_taken": package[0],
-			"serving": package[1]
-		}
-		# serving response
+			"serving": package[1]}
+		
 		self.write(json.dumps(delivery))
+
+class BlobHandler(BaseHandler):
+	@tornado.web.asynchronous
+	def get(self):
+		print("starting")
+		time.sleep(4)
+		print("the love")
 
 handlers = [
 	(r"/", IndexHandler),
 	(r"/serve", ServiceHandler),
+	(r"/blob", BlobHandler),
 ]
 
 settings = dict(
@@ -63,7 +68,7 @@ def start():
 	app_server = tornado.httpserver.HTTPServer(app)
 	app_server.listen(tornado.options.options.port)
 	
-	tornado.ioloop.IOLoop.current().start()
+	tornado.ioloop.IOLoop.instance().start()
 
 if __name__ == "__main__":
 	try:

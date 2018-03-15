@@ -7,3 +7,5 @@ assets/saved.txt
 # ignore worker log
 assets/worker.log
 
+# ignore backup dir
+backup/
