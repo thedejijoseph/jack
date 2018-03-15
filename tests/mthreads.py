@@ -4,7 +4,7 @@ import requests
 import threading
 
 # long running orders
-orders = ["cholesterol", "ambiguously", "bonaventura", "dyslexia", "empathetically", "fundamental"]
+orders = ["choker", "ambient", "bonafide", "dyslexia", "empathetic", "funday"]
 
 def shoot(order):
 	r = requests.get(f"http://localhost:3303/serve?order={order}")

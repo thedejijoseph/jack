@@ -8,6 +8,8 @@ import os
 import json
 import time
 import logging
+from concurrent.futures import ThreadPoolExecutor
+pool = ThreadPoolExecutor()
 
 import jack
 
@@ -32,7 +34,8 @@ class ServiceHandler(BaseHandler):
 	def get(self):
 		order = self.get_argument('order')
 		logging.info(f"started a new order: {order}")
-		package = yield tornado.ioloop.IOLoop.current().run_in_executor(jack.process, [order])
+		
+		package = yield pool.submit(jack.process, order)
 		
 		delivery = {
 			"time_taken": package[0],
