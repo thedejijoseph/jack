@@ -33,15 +33,12 @@ class ServiceHandler(BaseHandler):
 	@gen.coroutine
 	def get(self):
 		order = self.get_argument('order')
-		logging.info(f"started a new order: {order}")
-		
 		package = yield pool.submit(jack.process, order)
 		
 		delivery = {
 			"time_taken": package[0],
 			"serving": package[1]}
 		
-		logging.info(f"done with order: {order}")
 		self.write(json.dumps(delivery))
 
 class BlobHandler(BaseHandler):
