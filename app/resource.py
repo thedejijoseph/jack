@@ -1,14 +1,51 @@
-# app.py: hold app resource
+# resource.py: hold app resource
 
-
+import logging
+import itertools
 import types
 import shutil
-import time
+import os
 
-from config import *
-from caching import *
+import requests
 
-# core methods
+
+# config
+# ------
+
+logging.basicConfig(
+	level = logging.DEBUG,
+	format = "%(asctime)s | %(levelname)s | %(message)s"
+)
+
+scramble = itertools.permutations
+file_host = "https://cdn.rawgit.com/wrecodde/jack/master/"
+
+try:
+	# check locally
+	word_file_path = os.path.join(os.path.dirname(__file__), "assets/words.txt")
+	with open(word_file_path) as words_file:
+		words = words_file.read().splitlines()
+		word_bank = set(words)
+except:
+	# removed external hosting option
+	raise
+	#pass
+
+
+# caching
+# -------
+
+# todo:
+	# build and load a cache (a database or a text file)
+
+cache = {}
+def cache_this(order, serving):
+	"""write the package to cache file and memory"""
+	
+	# this might include extra processes too
+	cache[order] = serving
+
+# app functions
 # ------------
 
 def prepare(order):

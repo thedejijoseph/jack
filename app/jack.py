@@ -1,5 +1,9 @@
+import time
 
-from app import *
+# being a part of the hack to solve import issues after
+# changing dir structure
+from resource import cache, cache_this, prepare, serve
+
 
 
 def process(order):

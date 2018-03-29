@@ -56,8 +56,8 @@ handlers = [
 
 settings = dict(
 	debug = True,
-	static_path = os.path.join(os.getcwd(), "assets"),
-	template_path = os.path.join(os.getcwd(), "pages"),
+	static_path = os.path.join(os.path.dirname(__file__), "assets"),
+	template_path = os.path.join(os.path.dirname(__file__), "pages"),
 )
 
 app = tornado.web.Application(
