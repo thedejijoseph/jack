@@ -1,16 +1,16 @@
 $(document).ready(function(){
 
-$('#makeOrder').on('click', makeOrder);
-$('#clearOrder').on('click', clearOrder);
+$('#order-btn').on('click', makeOrder);
+$('#clear-btn').on('click', clearOrder);
 
 var feedback = $('#feedback');
 
 function makeOrder(e){
 	e.preventDefault();
 	
-	var order = $('input#orderBox').val().toLowerCase();
+	var order = $('input#order-box').val().toLowerCase();
 	if (order.length >= 11){
-		feedback.html("Sorry. We don't take orders this large.");
+		feedback.text("Sorry. We don't take orders this large.");
 		return
 	}
 	feedback.html("processing");
@@ -26,7 +26,7 @@ function makeOrder(e){
 
 function serveOrder(delivery, status, xhr){
 	package = JSON.parse(delivery);
-	var order = $("#orderBox").val()
+	var order = $("#order-box").val()
 	
 	var time_taken = package["time_taken"];
 	var serving = package ["serving"];
@@ -49,15 +49,14 @@ function serveOrder(delivery, status, xhr){
 	
 	feedback.html(msg)
 	
-	$('#menu').html("working on it.. rendering that is");
-	// $('#menu').text(serving)
+	$('#canvas').html("working on it.. rendering that is");
 }
 
 function clearOrder(e){
 	e.preventDefault();
-	$("#orderBox").val("");
+	$("#order-box").val("");
 	$("#feedback").text("how about an order");
-	$("#menu").html("");
+	$("#canvas").html("");
 }
 
 // close document.ready function()

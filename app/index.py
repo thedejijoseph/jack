@@ -19,7 +19,7 @@ logging.basicConfig(
 )
 
 from tornado.options import define
-define("port", default=3303, help="open at given port", type=int)
+define("port", default=3303, type=int)
 
 class BaseHandler(tornado.web.RequestHandler):
 	pass

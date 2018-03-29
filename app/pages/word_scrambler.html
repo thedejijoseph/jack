@@ -5,57 +5,67 @@
 		<title>Word Jack!</title>
 		<meta name="viewport" content="width=device-width, scale=1"/>
 		
+		<script src="{{static_url("jquery/jquery-3.2.1.min.js") }}"></script>
+		<script src="{{ static_url('js/jack.js') }}"></script>
+		
+		<link rel="stylesheet" href="{{static_url("bootstrap/css/bootstrap.min.css") }}"/>
+		
 		<style>
-			@import url("{{ static_url('css/materialize.min.css') }}");
-			
-			body{
-				font-family: serif;
-			}
-			#header{
-				margin: 10px 0px;;
-				font-size: 2em;
-			}
-			
 			#feedback{
 				margin: 12px 0px;
-				font-size: 0.9rem;
+				font-size: 1.6rem;
+				text-transform: uppercase;
+				color: #aaa;
+			}
+			
+			#order-box{
 				text-transform: uppercase;
 			}
 			
-			#orderBox{
-				text-transform: uppercase;
+			.btn{
+				padding: 5px 25px 5px 25px;
 			}
 		</style>
 	</head>
 	
 	<body>
-		<div id="container" class="container row">
-			<div id="header" class="col s12 m12 l12">
-				<div>Word Jack!</div>
-			</div>
-			
-			<div id="waiter" class="col s12 l4">
-				<form id="orderForm">
-					<div id="call">
-						<input type="text" name="order" id="orderBox" autocomplete="off"/>
+		<div class="container">
+			<div class="row">
+				
+				<div class="col-lg-4">
+					<div class="row">
+						<div class="col-lg-12">
+							<h3>Word Jack!</h3>
+						</div>
 					</div>
-					<div id="controls" class="">
-						<input type="submit" value="order" id="makeOrder" class="btn white black-text"/>
-						<button id="clearOrder" class="btn white black-text">clear</button>
+					
+					<div class="row">
+						<div class="col-lg-12">
+							<form role="form">
+								<div class="form-group">
+									<input id="order-box" type="text" class="form-control">
+								</div>
+								<div>
+									<button id="order-btn" class="btn btn-default">Order</button>
+									<button id="clear-btn" class="btn btn-default">Clear</button>
+								</div>
+							</form>
+						</div>
 					</div>
-				</form>
-				<div id="feedback">
-					hi, what would like to have today?
 				</div>
-			</div>
-			
-			<div id="menu" class="col s12 l8 center grey lighten-3">
+				
+				<div class="col-lg-8">
+					<div id="feedback">
+						what would you like to have 
+					</div>
+					
+					<div id="canvas">
+						still working on that rendering
+					</div>
+				</div>
 				
 			</div>
 		</div>
-		
-		<script src="{{ static_url('js/jquery-3.2.1.min.js') }}"></script>
-		<script src="{{ static_url('js/jack.js') }}"></script>
 	</body>
 
 </html>
