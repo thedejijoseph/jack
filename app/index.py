@@ -17,6 +17,7 @@ logging.basicConfig(
 	level = logging.DEBUG,
 	format = "%(asctime)s | %(levelname)s | %(message)s",
 )
+logging.disable(logging.DEBUG)
 
 from tornado.options import define
 define("port", default=3303, type=int)

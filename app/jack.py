@@ -1,25 +1,16 @@
 import time
-
-# being a part of the hack to solve import issues after
-# changing dir structure
-from resource import cache, cache_this, prepare, serve
-
-
+from resource import *
 
 def process(order):
 	"""jack's process logic"""
 	
 	t1 = time.time()
-	
-	# normalize
 	order = order.lower()
 	
 	if order in cache:
 		serving = cache.get(order)
-		
 		t2 = time.time()
 		tt = "%.2f" %(t2 - t1)
-		
 		return tt, serving
 	
 	# if order has not been cached
@@ -30,7 +21,6 @@ def process(order):
 	tt = "%.2f" %(t2 - t1)
 	
 	cache_this(order, serving)
-		
 	return tt, serving
 
 def drive_in(order):
