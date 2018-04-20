@@ -7,13 +7,16 @@ def process(order):
 	t1 = time.time()
 	order = order.lower()
 	
-	if order in cache:
-		serving = cache.get(order)
-		t2 = time.time()
-		tt = "%.2f" %(t2 - t1)
-		return tt, serving
+	# establish a threshold of length 9..
+	if len(order) >= 9:
+		if order in cache:
+			serving = cache.get(order)
+			t2 = time.time()
+			tt = "%.2f" %(t2 - t1)
+			return tt, serving
 	
-	# if order has not been cached
+	# <9 orders
+	# and never processed >9 orders
 	dish = prepare(order)
 	serving = serve(dish)
 	

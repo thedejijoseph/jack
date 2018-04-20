@@ -5,6 +5,7 @@ import types
 import shutil
 import os
 
+import tinydb
 import requests
 
 
@@ -34,14 +35,32 @@ except:
 # caching
 # -------
 
-# todo:
-	# build and load a cache (a database or a text file)
+# we're going with tinydb (non-relational)
+# giving us space for additions later on
 
+# until made offline accessible, the cache db would follow the app
+# but nevertheless, provide for failure
+
+app_root = os.path.dirname(__file__)
+if not os.path.isdir(app_root + "/assets/database"):
+	os.mkdir(app_root + "/assets/database")
+
+cache_db = tinydb.TinyDB(app_root + "/assets/database/cache.db")
 cache = {}
+
+for item in cache_db.all():
+	order = item["order"]
+	serving = item["serving"]
+	cache[order] = serving
+
 def cache_this(order, serving):
 	"""write the package to cache file and memory"""
 	
-	# this might include extra processes too
+	if len(order) < 9:
+		# no need for caching
+		return
+	
+	cache_db.insert({"order": order, "serving": serving})
 	cache[order] = serving
 
 # app functions
