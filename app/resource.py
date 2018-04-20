@@ -1,6 +1,5 @@
 # resource.py: hold app resource
 
-import logging
 import itertools
 import types
 import shutil
@@ -17,11 +16,6 @@ __all__ = [
 # config
 # ------
 
-logging.basicConfig(
-	level = logging.DEBUG,
-	format = "%(asctime)s | %(levelname)s | %(message)s"
-)
-
 scramble = itertools.permutations
 file_host = "https://cdn.rawgit.com/wrecodde/jack/master/"
 
@@ -33,8 +27,8 @@ try:
 		word_bank = set(words)
 except:
 	# removed external hosting option
+	# external resources and lists would move with the app
 	raise
-	#pass
 
 
 # caching
