@@ -35,31 +35,24 @@ def process(order):
 	return tt, serving
 
 def drive_in(order):
-	if len(order) < 9:
-		time_taken, serving = process(order)
-		
-		report(order, len(serving), time_taken)
-		fine_print(serving)
+	timer = resource.Timer()
+	timer.start()
+	total_size = 0
 	
-	else:
-		timer = resource.Timer()
-		timer.start()
-		total_size = 0
-		
-		large = resource.prepare(order)
-		for batch in large:
-			if batch:
-				length = len(batch[0])
-				rough = resource.serve(batch)
-				size = len(rough)
-				total_size += size
-				
-				print(length, "lettered", size, "large")
-				print("=" * 7)
-				fine_print(rough)
-		timer.finish()
-		report(order, total_size, timer.time_taken())
-		print("")
+	large = resource.prepare(order)
+	for batch in large:
+		if batch:
+			length = len(batch[0])
+			rough = resource.serve(batch)
+			size = len(rough)
+			total_size += size
+			
+			print(length, "lettered", size, "large")
+			print("=" * 7)
+			fine_print(rough)
+	timer.finish()
+	report(order, total_size, timer.time_taken())
+	print("")
 
 
 if __name__ == "__main__":
@@ -70,6 +63,6 @@ if __name__ == "__main__":
 		try:
 			drive_in(order)
 		except KeyboardInterrupt:
-			print("\nCANCELLING {order}..")
+			print(f"\nCANCELLING {order}..")
 			print("")
 			pass
