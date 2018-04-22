@@ -1,9 +1,10 @@
 # resource.py: hold app resource
 
-import itertools
+import os
+import time
 import types
 import shutil
-import os
+import itertools
 
 import tinydb
 import requests
@@ -12,10 +13,14 @@ import requests
 __all__ = [
 	"cache", "cache_this", 
 	"prepare", "serve", 
-	"fine_print"]
+	"report", "fine_print"]
 
 # config
 # ------
+
+# changes:
+	# moved reporting to a function
+	# added timer class
 
 scramble = itertools.permutations
 file_host = "https://cdn.rawgit.com/wrecodde/jack/master/"
@@ -105,7 +110,7 @@ def serve(bowls):
 			stretch = len(i)
 	
 	for i in range(2, stretch + 1):
-		grp = [x for x in filter(lambda k: True if i == len(k) else False, bowls)]
+		grp = [x for x in filter(lambda k: True if i == len(k) else False, set(bowls))]
 		grp.sort()
 		queue.extend(grp)
 	
@@ -114,6 +119,31 @@ def serve(bowls):
 
 # supplementary methods
 # ---------------------
+
+class Timer:
+	def __init__(self):
+		self.time_started = 0
+		self.time_finished = 0
+		# to ensure appropriate calls were made
+		self.ts, tf = False, False
+	
+	def start(self):
+		self.time_started = time.time()
+		self.ts = True
+	
+	def finish(self):
+		self.time_finished = time.time()
+		self.tf = True
+	
+	def time_taken(self):
+		if self.ts and self.tf:
+			ts = self.time_started
+			tf = self.time_finished
+			total_time = tf - ts
+			return "%.2f" %(total_time)
+		else:
+			print("timers we're not called")
+			return
 
 def quick_look(order):
 	"""See if the word is just scrambled"""
@@ -198,6 +228,24 @@ def sort_by_y(delivery, stack_size):
 			break
 	
 	return stacks
+
+def report(order, serving_size, time_taken):
+	unit = "seconds"
+	if time_taken == "1.00":
+		unit = "second"
+	
+	if serving_size == 0:
+		# how about a smarter feedback
+		feedback = f"{order}: 0 servings ({time_taken} {unit})"
+		
+	elif serving_size == 1:
+		feedback = f"{order}: a special! ({time_taken} {unit})"
+	
+	else:
+		feedback = f"{order}: {serving_size} servings ({time_taken} {unit})"
+	
+	print(feedback)
+	print("=" * 12)
 
 def fine_print(delivery):
 	"""Pretty-print content of the stack.
