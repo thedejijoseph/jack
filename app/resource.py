@@ -12,15 +12,12 @@ import requests
 
 __all__ = [
 	"cache", "cache_this", 
-	"prepare", "serve", 
-	"report", "fine_print"]
+	"report", "fine_print",
+	"cut_into_blocks",]
 
 # config
 # ------
 
-# changes:
-	# moved reporting to a function
-	# added timer class
 
 scramble = itertools.permutations
 file_host = "https://cdn.rawgit.com/wrecodde/jack/master/"
@@ -186,6 +183,22 @@ def get_stack_size(delivery):
 	stack_size = t_width // (stretch + 2)
 	
 	return stack_size, stretch
+
+def cut_into_blocks(serving):
+	blk_size = len(serving[0])
+	
+	if blk_size <= 9:
+		cut_size = 3
+	else:
+		cut_size = 2
+	
+	blocks = []
+	while serving:
+		cut = serving[:cut_size]
+		blocks.append(cut)
+		serving = serving[cut_size:]
+	
+	return blocks
 	
 def sort_by_x(delivery, stack_size):
 	"""
@@ -245,15 +258,15 @@ def report(order, serving_size, time_taken):
 		feedback = f"{order}: {serving_size} servings ({time_taken} {unit})"
 	
 	print(feedback)
-	print("=" * 12)
+	print("=" * 7)
 
-def fine_print(delivery):
+def fine_print(serving):
 	"""Pretty-print content of the stack.
 	stacks is a list of lists (stacks)
 	"""
 	
-	stack_size, stretch = get_stack_size(delivery)
-	stacks = sort_by_x(delivery, stack_size)
+	stack_size, stretch = get_stack_size(serving)
+	stacks = sort_by_x(serving, stack_size)
 	
 	# i think y looks better than x though
 	

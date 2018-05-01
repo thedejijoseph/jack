@@ -1,63 +1,111 @@
 $(document).ready(function(){
-
-$('#order-btn').on('click', makeOrder);
-$('#clear-btn').on('click', clearOrder);
-
-var feedback = $('#feedback');
-
-function makeOrder(e){
-	e.preventDefault();
+	// do whatever
 	
-	var order = $('input#order-box').val().toLowerCase();
-	if (order.length >= 11){
-		feedback.text("Sorry. We don't take orders this large.");
-		return
+	// event listener on clear btn
+	$("#clear-btn").on("click", function(e){
+		e.preventDefault();
+		$("#feedback").text("how about an order");
+		$("#order-box").val("");
+		$("#canvas").html("");
+	});
+	
+	// event listener on order btn
+	$("#order-btn").on("click", function(e){
+		e.preventDefault();
+		
+		var order = $("#order-box").val()
+		if (order == ""){return;}
+		if (order.length >= 12){
+			$("#feedback").text("we dont serve orders this large")
+			return;
+		}
+		
+		// open a new websocket
+		socket = new WebSocket("ws://localhost:3303/blob")
+		socket.onopen = function(){
+			var orderPacket = {"order": order}
+			socket.send(JSON.stringify(orderPacket))
+			$("#canvas").html("");
+		}
+		
+		socket.onmessage = function(event){
+			$("#feedback").text("serving...");
+			
+			var packet = event.data;
+			serve(packet)
+		}
+		
+		socket.onclose = function(){
+			// pass
+			return;
+		}
+	})
+	
+	let wrap = function (el, content, attrs){
+		// wrap content in given element tags
+		p_attrs = ""
+		if (attrs){
+			Object.keys(attrs).forEach(function(key){
+				attr = key;
+				val = attrs[key].join(" ");
+				pair = attr + "=" + '"' + val + '"'
+				p_attrs += pair
+			});
+		}
+		opening = "<" + el + " " + p_attrs + ">"
+		closing = "</" + el + ">"
+		return opening + content + closing
+		// pretty much minimal
 	}
-	feedback.html("processing");
-	$.ajax("/serve",
-		{
-			method: "GET",
-			data: {
-					"order": order
-				},
-			success: serveOrder,
-		});
-}
-
-function serveOrder(delivery, status, xhr){
-	package = JSON.parse(delivery);
-	var order = $("#order-box").val()
 	
-	var time_taken = package["time_taken"];
-	var serving = package ["serving"];
-	
-	var size = serving.length;
-	var serving_size = "servings";
-	var unit = "seconds";
-	
-	if (size == 1){
-		serving_size = "serving";
+	let serve = function (packet){
+		// unpack packet
+		packet = JSON.parse(packet)
+		var end = packet["time"];
+		if (end){
+			order = packet["order"]
+			count = packet["count"]
+			total_time = packet["time"]
+			
+			s1 = order + ": ";
+			s2 = count + " total "
+			s3 = "in " + total_time + "s."
+			$("#feedback").text(s1 + s2 + s3);
+			return
+		}
+		
+		// if not..
+		serving = packet["serving"];
+		blk_size = packet["blk_size"];
+		blk_count = packet["blk_count"];
+		
+		size = blk_size + " lettered"
+		count = blk_count + " large"
+		desc = wrap("span", size + " " + count)
+		
+		header = wrap("div", desc, {"class": ["blk-header"]})
+		
+		let rows = ""
+		for (block_id in serving){
+			block = serving[block_id]
+			let row = ""
+			for (word_id in block){
+				word = block[word_id]
+				p_word = wrap("td", word)
+				row += p_word
+			}
+			p_row = wrap("tr", row)
+			rows += p_row
+		}
+		
+		head = wrap("thead", "")
+		body = wrap("tbody", rows)
+		table = wrap("table", head + body, {"class": ["table"]})
+		
+		content = wrap("div", table, {"class": ["blk-content"]})
+		
+		packet = wrap("div", header + content)
+		$("#canvas").append(packet)
 	}
-	
-	if (time_taken == "1.00"){
-		unit = "second"
-	}
-	
-	msg = order + ": " + 
-		size + " " + serving_size + " long" + 
-		" (" + time_taken + " " + unit + ")"
-	
-	feedback.html(msg)
-	
-	$('#canvas').html("working on it.. rendering that is");
-}
-
-function clearOrder(e){
-	e.preventDefault();
-	$("#order-box").val("");
-	$("#feedback").text("how about an order");
-	$("#canvas").html("");
-}
-
-// close document.ready function()
 });
+
