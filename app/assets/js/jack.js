@@ -58,6 +58,10 @@ $(document).ready(function(){
 		// pretty much minimal
 	}
 	
+	let toggle = function(){
+		alert("mother!")
+	}
+	
 	let serve = function (packet){
 		// unpack packet
 		packet = JSON.parse(packet)
@@ -82,8 +86,9 @@ $(document).ready(function(){
 		size = blk_size + " lettered"
 		count = blk_count + " large"
 		desc = wrap("span", size + " " + count)
+		t_btn = wrap("span", "", {"onclick": ["$(this).parent().siblings('div').toggle()"], "class": ["tgl-btn"]})
 		
-		header = wrap("div", desc, {"class": ["blk-header"]})
+		header = wrap("div", desc + t_btn, {"class": ["blk-header"]})
 		
 		let rows = ""
 		for (block_id in serving){
@@ -102,10 +107,15 @@ $(document).ready(function(){
 		body = wrap("tbody", rows)
 		table = wrap("table", head + body, {"class": ["table"]})
 		
-		content = wrap("div", table, {"class": ["blk-content"]})
+		content = wrap("div", table, {"class": ["blk-content"], "style": ["display: none;"]})
 		
-		packet = wrap("div", header + content)
+		packet = wrap("div", header + content, {"class" 
+: ["packet"]})
 		$("#canvas").append(packet)
 	}
 });
 
+// Wed, May 2, 2018 at 02:08
+// You can say I achieved what I set out to in creating
+// word scrambler thingy. Hacky much, but I've got it.
+// I'll revisit and I know I'll blow my mind.
