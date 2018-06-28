@@ -8,10 +8,17 @@ from tornado import gen
 import os
 import json
 import time
+import logging
 from concurrent.futures import ThreadPoolExecutor
 pool = ThreadPoolExecutor()
 
 import jack
+
+# configure logging module
+log_format = "%(levelname)s: %(asctime)s | %(message)s"
+logging.basicConfig(filename="./app/app.log", level=logging.INFO, format=log_format)
+logger = logging.getLogger()
+
 
 from tornado.options import define
 define("port", default=3303, type=int)
@@ -31,6 +38,9 @@ class ServiceHandler(BaseHandler):
 		order = self.get_argument('order')
 		# delivery = yield pool.submit(jack.process, order)
 		
+		# adding logging (debug purposes)
+		logger.info(f"processing order: {order}")
+		
 		delivery = yield pool.submit(jack.real_time, order)
 		for batch in delivery:
 			self.write(json.dumps({"serving": batch}))
@@ -46,6 +56,7 @@ class AboutPage(BaseHandler):
 class BlobHandler(tornado.websocket.WebSocketHandler):
 	def open(self):
 		# log connecting client
+		logger.info("socket client-server connection established")
 		pass
 	
 	def on_message(self, message):
@@ -55,6 +66,7 @@ class BlobHandler(tornado.websocket.WebSocketHandler):
 			delivery_packet = {"error": True, "msg": "invalid order"}
 			self.write_message(delivery_packet)
 		
+		logger.info(f"processing order: {order}")
 		order = order.lower()
 		prime = jack.real_time(order)
 		
