@@ -39,6 +39,10 @@ class DashboardHandler(BaseHandler):
 	def get(self):
 		self.render("dashboard.html")
 
+class AboutPage(BaseHandler):
+	def get(self):
+		self.render("about.html")
+
 class BlobHandler(tornado.websocket.WebSocketHandler):
 	def open(self):
 		# log connecting client
@@ -65,6 +69,7 @@ class BlobHandler(tornado.websocket.WebSocketHandler):
 handlers = [
 	(r"/", IndexHandler),
 	(r"/serve", ServiceHandler),
+	(r"/about", AboutPage),
 	(r"/dashboard", DashboardHandler),
 	(r"/blob", BlobHandler),
 ]

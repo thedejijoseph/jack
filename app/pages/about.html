@@ -2,7 +2,7 @@
 <html lang="en">
 	
 	<head>
-		<title>Word Jack!</title>
+		<title>About Word Jack!</title>
 		<meta name="viewport" content="width=device-width, scale=1"/>
 		
 		<script src="{{ static_url("jquery/jquery-3.2.1.min.js") }}"></script>
@@ -49,6 +49,24 @@
 			.packet{
 				margin: 5px 0px;
 			}
+			
+			.about{
+				background: white;
+				margin-top: 30px;
+			}
+			
+			.title{
+			    color: #337ab3;
+			}
+			
+			.author{
+				
+			}
+			
+			.github{
+				text-decoration: underline;
+				
+			}
 		</style>
 	</head>
 	
@@ -56,43 +74,12 @@
 		<div class="container">
 			<div class="row">
 				
-				<div class="col-lg-4">
-					<div class="row">
-						<div class="col-lg-12" style="background: #337ab7;">
-							<nav class="navbar" style="margin-top: 10px;" role="navigation">
-								<div class="navbar-header">
-									<a class="navbar-brand" style="color: white; padding-left: 0px;">
-										Word Jack
-									</a>
-									<button type="button" class="btn btn-secondary navbar-btn" onclick="window.location='/about'">About</button>
-								</div>
-							</nav>
-						</div>
-					</div>
+				<div class="jumbotron about">
+					<h2 class="title">Word Jack!</h2>
 					
-					<div class="row">
-						<div class="col-lg-12">
-							<form role="form">
-								<div class="form-group">
-									<input id="order-box" type="text" class="form-control" autocomplete="off">
-								</div>
-								<div>
-									<button id="order-btn" class="btn btn-default">Order</button>
-									<button id="clear-btn" class="btn btn-default">Clear</button>
-								</div>
-							</form>
-						</div>
-					</div>
-				</div>
-				
-				<div class="col-lg-8">
-					<div id="feedback">
-						what would you like to have 
-					</div>
+					<p class="desc">so you would not have to rack your fine head when playing word cookies again, I put this thing together.</p>
 					
-					<div id="canvas">
-						
-					</div>
+					<p class="author">with love from moi, Deji Joseph <a class="github">@wrecodde</a></p>
 				</div>
 				
 			</div>
