@@ -1,3 +1,8 @@
-INFO: 2018-06-28 17:59:11,497 | 101 GET /blob (127.0.0.1) 9.12ms
-INFO: 2018-06-28 17:59:11,505 | socket client-server connection established
-INFO: 2018-06-28 17:59:11,557 | processing order: gringo
+INFO: 2018-06-29 23:09:48,054 | 304 GET / (127.0.0.1) 74.75ms
+INFO: 2018-06-29 23:09:48,321 | 304 GET /static/jquery/jquery-3.2.1.min.js?v=c9f5aeeca3ad37bf2aa006139b935f0a (127.0.0.1) 30.79ms
+INFO: 2018-06-29 23:09:48,352 | 304 GET /static/bs/js/bootstrap.min.js?v=5869c96cc8f19086aee625d670d741f9 (127.0.0.1) 14.94ms
+INFO: 2018-06-29 23:09:48,369 | 304 GET /static/js/jack.js?v=3c84e74f5d00b8cd0415e83a8ddeb2c7 (127.0.0.1) 8.62ms
+INFO: 2018-06-29 23:09:48,390 | 304 GET /static/bs/css/bootstrap.min.css?v=ec3bb52a00e176a7181d454dffaea219 (127.0.0.1) 12.30ms
+INFO: 2018-06-29 23:10:26,256 | 101 GET /blob (127.0.0.1) 55.18ms
+INFO: 2018-06-29 23:10:26,260 | socket client-server connection established
+INFO: 2018-06-29 23:10:26,307 | processing order: operations

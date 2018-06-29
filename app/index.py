@@ -23,13 +23,17 @@ logger = logging.getLogger()
 from tornado.options import define
 define("port", default=3303, type=int)
 
+
+# heroku variable port number fix
+var_port_no = tornado.options.options.port
+
 class BaseHandler(tornado.web.RequestHandler):
 	pass
 
 class IndexHandler(BaseHandler):
 	@gen.coroutine
 	def get(self):
-		self.render("index.html")
+		self.render("index.html", port_no=var_port_no)
 		return
 
 class ServiceHandler(BaseHandler):
@@ -100,7 +104,9 @@ app = tornado.web.Application(
 def start():
 	tornado.options.parse_command_line()
 	app_server = tornado.httpserver.HTTPServer(app)
-	app_server.listen(tornado.options.options.port)
+	
+	# heroku variable port number fix
+	app_server.listen(var_port_no)
 	
 	tornado.ioloop.IOLoop.instance().start()
 

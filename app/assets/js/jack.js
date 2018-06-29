@@ -1,5 +1,6 @@
 $(document).ready(function(){
 	// do whatever
+	let var_port_no = port_no
 	
 	// event listener on clear btn
 	$("#clear-btn").on("click", function(e){
@@ -21,7 +22,7 @@ $(document).ready(function(){
 		}
 		
 		// open a new websocket
-		socket = new WebSocket("ws://localhost:3303/blob")
+		socket = new WebSocket("ws://localhost:"+var_port_no+"/blob")
 		socket.onopen = function(){
 			var orderPacket = {"order": order}
 			socket.send(JSON.stringify(orderPacket))
@@ -41,7 +42,7 @@ $(document).ready(function(){
 		}
 	})
 	
-	let wrap = function (el, content, attrs){
+	let wrap = function(el, content, attrs){
 		// wrap content in given element tags
 		p_attrs = ""
 		if (attrs){
@@ -58,11 +59,7 @@ $(document).ready(function(){
 		// pretty much minimal
 	}
 	
-	let toggle = function(){
-		alert("mother!")
-	}
-	
-	let serve = function (packet){
+	let serve = function(packet){
 		// unpack packet
 		packet = JSON.parse(packet)
 		var end = packet["time"];
