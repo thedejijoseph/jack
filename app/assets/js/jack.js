@@ -22,7 +22,7 @@ $(document).ready(function(){
 		}
 		
 		// open a new websocket
-		socket = new WebSocket("ws://localhost:"+var_port_no+"/blob")
+		socket = new WebSocket("ws://wx-jack.herokuapp.com/blob")
 		socket.onopen = function(){
 			var orderPacket = {"order": order}
 			socket.send(JSON.stringify(orderPacket))
