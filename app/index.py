@@ -24,16 +24,14 @@ from tornado.options import define
 define("port", default=3303, type=int)
 
 
-# heroku variable port number fix
-var_port_no = tornado.options.options.port
-
 class BaseHandler(tornado.web.RequestHandler):
 	pass
 
 class IndexHandler(BaseHandler):
 	@gen.coroutine
 	def get(self):
-		self.render("index.html", port_no=var_port_no)
+		self.render("index.html", port_no=tornado.options.options.port)
+		# do you see where the fix ended up going..
 		return
 
 class ServiceHandler(BaseHandler):
@@ -104,9 +102,7 @@ app = tornado.web.Application(
 def start():
 	tornado.options.parse_command_line()
 	app_server = tornado.httpserver.HTTPServer(app)
-	
-	# heroku variable port number fix
-	app_server.listen(var_port_no)
+	app_server.listen(tornado.options.options.port)
 	
 	tornado.ioloop.IOLoop.instance().start()
 

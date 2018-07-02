@@ -6,3 +6,70 @@ INFO: 2018-06-29 23:09:48,390 | 304 GET /static/bs/css/bootstrap.min.css?v=ec3bb
 INFO: 2018-06-29 23:10:26,256 | 101 GET /blob (127.0.0.1) 55.18ms
 INFO: 2018-06-29 23:10:26,260 | socket client-server connection established
 INFO: 2018-06-29 23:10:26,307 | processing order: operations
+INFO: 2018-07-01 00:08:54,875 | 304 GET / (127.0.0.1) 90.73ms
+WARNING: 2018-07-01 00:08:56,452 | 404 GET /favicon.ico (127.0.0.1) 99.69ms
+INFO: 2018-07-01 00:09:51,647 | 304 GET / (127.0.0.1) 103.23ms
+INFO: 2018-07-01 00:10:25,974 | /storage/sdcard0/code/shop/jack/app/index.py modified; restarting server
+INFO: 2018-07-01 00:11:06,803 | /storage/sdcard0/code/shop/jack/app/index.py modified; restarting server
+INFO: 2018-07-01 00:14:20,586 | /storage/sdcard0/code/shop/jack/app/index.py modified; restarting server
+ERROR: 2018-07-01 00:14:55,650 | Uncaught exception GET / (127.0.0.1)
+HTTPServerRequest(protocol='http', host='localhost:3340', method='GET', uri='/', version='HTTP/1.1', remote_ip='127.0.0.1')
+Traceback (most recent call last):
+  File "/data/data/com.termux/files/usr/lib/python3.6/site-packages/tornado/web.py", line 1543, in _execute
+    result = yield result
+  File "/data/data/com.termux/files/usr/lib/python3.6/site-packages/tornado/gen.py", line 1099, in run
+    value = future.result()
+  File "/data/data/com.termux/files/usr/lib/python3.6/site-packages/tornado/gen.py", line 296, in wrapper
+    result = func(*args, **kwargs)
+  File "/data/data/com.termux/files/usr/lib/python3.6/types.py", line 248, in wrapped
+    coro = func(*args, **kwargs)
+  File "/storage/sdcard0/code/shop/jack/app/index.py", line 37, in get
+    self.render("index.html", port_no=var_port_no)
+NameError: name 'var_port_no' is not defined
+ERROR: 2018-07-01 00:14:55,684 | 500 GET / (127.0.0.1) 42.19ms
+WARNING: 2018-07-01 00:14:55,923 | 404 GET /favicon.ico (127.0.0.1) 12.01ms
+WARNING: 2018-07-01 01:07:29,888 | 404 GET /favicon.ico (127.0.0.1) 66.91ms
+INFO: 2018-07-02 02:31:05,103 | /storage/sdcard0/code/shop/jack/app/index.py modified; restarting server
+ERROR: 2018-07-02 02:31:54,561 | Uncaught exception GET / (127.0.0.1)
+HTTPServerRequest(protocol='http', host='localhost:5504', method='GET', uri='/', version='HTTP/1.1', remote_ip='127.0.0.1')
+Traceback (most recent call last):
+  File "/data/data/com.termux/files/usr/lib/python3.6/site-packages/tornado/web.py", line 1543, in _execute
+    result = yield result
+  File "/data/data/com.termux/files/usr/lib/python3.6/site-packages/tornado/gen.py", line 1099, in run
+    value = future.result()
+  File "/data/data/com.termux/files/usr/lib/python3.6/site-packages/tornado/gen.py", line 296, in wrapper
+    result = func(*args, **kwargs)
+  File "/data/data/com.termux/files/usr/lib/python3.6/types.py", line 248, in wrapped
+    coro = func(*args, **kwargs)
+  File "/storage/sdcard0/code/shop/jack/app/index.py", line 33, in get
+    self.render("index.html", port_no=var_port_no)
+NameError: name 'var_port_no' is not defined
+ERROR: 2018-07-02 02:31:54,608 | 500 GET / (127.0.0.1) 52.97ms
+WARNING: 2018-07-02 02:31:54,893 | 404 GET /favicon.ico (127.0.0.1) 69.48ms
+INFO: 2018-07-02 02:32:17,842 | /storage/sdcard0/code/shop/jack/app/index.py modified; restarting server
+ERROR: 2018-07-02 02:32:25,287 | Uncaught exception GET / (127.0.0.1)
+HTTPServerRequest(protocol='http', host='localhost:5504', method='GET', uri='/', version='HTTP/1.1', remote_ip='127.0.0.1')
+Traceback (most recent call last):
+  File "/data/data/com.termux/files/usr/lib/python3.6/site-packages/tornado/web.py", line 1543, in _execute
+    result = yield result
+  File "/data/data/com.termux/files/usr/lib/python3.6/site-packages/tornado/gen.py", line 1099, in run
+    value = future.result()
+  File "/data/data/com.termux/files/usr/lib/python3.6/site-packages/tornado/gen.py", line 296, in wrapper
+    result = func(*args, **kwargs)
+  File "/data/data/com.termux/files/usr/lib/python3.6/types.py", line 248, in wrapped
+    coro = func(*args, **kwargs)
+  File "/storage/sdcard0/code/shop/jack/app/index.py", line 33, in get
+    self.render("index.html", port_no=port_no)
+NameError: name 'port_no' is not defined
+ERROR: 2018-07-02 02:32:25,319 | 500 GET / (127.0.0.1) 35.37ms
+INFO: 2018-07-02 02:32:54,216 | /storage/sdcard0/code/shop/jack/app/index.py modified; restarting server
+INFO: 2018-07-02 02:32:59,738 | 200 GET / (127.0.0.1) 95.01ms
+INFO: 2018-07-02 02:32:59,938 | 200 GET /static/bs/js/bootstrap.min.js?v=5869c96cc8f19086aee625d670d741f9 (127.0.0.1) 80.20ms
+INFO: 2018-07-02 02:32:59,940 | 200 GET /static/js/jack.js?v=3c84e74f5d00b8cd0415e83a8ddeb2c7 (127.0.0.1) 57.22ms
+INFO: 2018-07-02 02:32:59,950 | 200 GET /static/jquery/jquery-3.2.1.min.js?v=c9f5aeeca3ad37bf2aa006139b935f0a (127.0.0.1) 161.93ms
+INFO: 2018-07-02 02:32:59,955 | 200 GET /static/bs/css/bootstrap.min.css?v=ec3bb52a00e176a7181d454dffaea219 (127.0.0.1) 53.71ms
+INFO: 2018-07-02 02:33:06,189 | 101 GET /blob (127.0.0.1) 18.79ms
+INFO: 2018-07-02 02:33:06,194 | socket client-server connection established
+INFO: 2018-07-02 02:33:06,281 | processing order: sancehz
+INFO: 2018-07-02 02:33:29,596 | /storage/sdcard0/code/shop/jack/app/index.py modified; restarting server
+INFO: 2018-07-02 02:34:10,076 | /storage/sdcard0/code/shop/jack/app/index.py modified; restarting server
