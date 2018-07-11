@@ -47,15 +47,7 @@ class ServiceHandler(BaseHandler):
 		for batch in delivery:
 			self.write(json.dumps({"serving": batch}))
 
-class DashboardHandler(BaseHandler):
-	def get(self):
-		self.render("dashboard.html")
-
-class AboutPage(BaseHandler):
-	def get(self):
-		self.render("about.html")
-
-class BlobHandler(tornado.websocket.WebSocketHandler):
+class RealTimeServiceHandler(tornado.websocket.WebSocketHandler):
 	def open(self):
 		# log connecting client
 		logger.info("socket client-server connection established")
@@ -80,12 +72,21 @@ class BlobHandler(tornado.websocket.WebSocketHandler):
 	def on_close(self):
 		pass
 
+class DashboardHandler(BaseHandler):
+	def get(self):
+		self.render("dashboard.html")
+
+class AboutPage(BaseHandler):
+	def get(self):
+		self.render("about.html")
+
+
 handlers = [
 	(r"/", IndexHandler),
-	(r"/serve", ServiceHandler),
-	(r"/about", AboutPage),
+	(r"/serve-old", ServiceHandler),
+	(r"/serve", RealTimeServiceHandler),
 	(r"/dashboard", DashboardHandler),
-	(r"/blob", BlobHandler),
+	(r"/about", AboutPage),
 ]
 
 settings = dict(

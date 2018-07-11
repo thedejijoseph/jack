@@ -73,3 +73,25 @@ INFO: 2018-07-02 02:33:06,194 | socket client-server connection established
 INFO: 2018-07-02 02:33:06,281 | processing order: sancehz
 INFO: 2018-07-02 02:33:29,596 | /storage/sdcard0/code/shop/jack/app/index.py modified; restarting server
 INFO: 2018-07-02 02:34:10,076 | /storage/sdcard0/code/shop/jack/app/index.py modified; restarting server
+INFO: 2018-07-11 02:10:47,480 | 200 GET / (127.0.0.1) 138.18ms
+INFO: 2018-07-11 02:10:47,620 | 200 GET /static/js/jack.js?v=f50f7d2d4b3f7687e728bf0d13ae82b3 (127.0.0.1) 26.28ms
+WARNING: 2018-07-11 02:10:47,924 | 404 GET /favicon.ico (127.0.0.1) 26.90ms
+INFO: 2018-07-11 02:13:23,963 | 200 GET / (127.0.0.1) 56.63ms
+INFO: 2018-07-11 02:13:24,073 | 304 GET /static/jquery/jquery-3.2.1.min.js?v=c9f5aeeca3ad37bf2aa006139b935f0a (127.0.0.1) 26.82ms
+INFO: 2018-07-11 02:13:24,105 | 304 GET /static/bs/js/bootstrap.min.js?v=5869c96cc8f19086aee625d670d741f9 (127.0.0.1) 14.98ms
+INFO: 2018-07-11 02:13:24,122 | 304 GET /static/js/jack.js?v=f50f7d2d4b3f7687e728bf0d13ae82b3 (127.0.0.1) 10.29ms
+INFO: 2018-07-11 02:13:24,143 | 304 GET /static/bs/css/bootstrap.min.css?v=ec3bb52a00e176a7181d454dffaea219 (127.0.0.1) 11.81ms
+INFO: 2018-07-11 02:16:53,303 | /storage/sdcard0/code/shop/jack/app/index.py modified; restarting server
+INFO: 2018-07-11 02:18:04,125 | /storage/sdcard0/code/shop/jack/app/index.py modified; restarting server
+INFO: 2018-07-11 02:18:49,009 | /storage/sdcard0/code/shop/jack/app/index.py modified; restarting server
+INFO: 2018-07-11 02:19:21,228 | 200 GET / (127.0.0.1) 52.54ms
+INFO: 2018-07-11 02:19:21,314 | 304 GET /static/jquery/jquery-3.2.1.min.js?v=c9f5aeeca3ad37bf2aa006139b935f0a (127.0.0.1) 14.24ms
+INFO: 2018-07-11 02:19:21,332 | 304 GET /static/bs/js/bootstrap.min.js?v=5869c96cc8f19086aee625d670d741f9 (127.0.0.1) 11.91ms
+INFO: 2018-07-11 02:19:21,377 | 304 GET /static/bs/css/bootstrap.min.css?v=ec3bb52a00e176a7181d454dffaea219 (127.0.0.1) 10.98ms
+INFO: 2018-07-11 02:19:21,386 | 200 GET /static/js/jack.js?v=67123a946d8e730884251c1d4fccb133 (127.0.0.1) 111.37ms
+INFO: 2018-07-11 02:19:26,926 | 101 GET /serve (127.0.0.1) 6.49ms
+INFO: 2018-07-11 02:19:26,931 | socket client-server connection established
+INFO: 2018-07-11 02:19:26,984 | processing order: sender
+INFO: 2018-07-11 02:19:39,827 | 101 GET /serve (127.0.0.1) 4.09ms
+INFO: 2018-07-11 02:19:39,829 | socket client-server connection established
+INFO: 2018-07-11 02:19:39,880 | processing order: senderous
