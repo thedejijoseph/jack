@@ -72,6 +72,21 @@ class RealTimeServiceHandler(tornado.websocket.WebSocketHandler):
 	def on_close(self):
 		pass
 
+class HandshakeHandler(tornado.websocket.WebSocketHandler):
+    def open(self):
+	    logger.info("opening handshake socket")
+	    return
+
+    def on_message(self, message):
+        logger.info("receiving handshake")
+        self.write_message("hi")
+        self.close()
+        return
+
+    def on_close(self):
+	    logger.info("handshake complete")
+	    return
+
 class DashboardHandler(BaseHandler):
 	def get(self):
 		self.render("dashboard.html")
@@ -85,6 +100,7 @@ handlers = [
 	(r"/", IndexHandler),
 	(r"/serve-old", ServiceHandler),
 	(r"/serve", RealTimeServiceHandler),
+	(r"/handshake", HandshakeHandler),
 	(r"/dashboard", DashboardHandler),
 	(r"/about", AboutPage),
 ]

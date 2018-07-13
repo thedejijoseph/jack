@@ -1,6 +1,24 @@
 $(document).ready(function(){
-	// do whatever
-	let var_port_no = port_no
+	// APP VARIABLES
+	let dev_socket = "ws://localhost:3303/serve"
+	let prod_socket = "ws://wx-jack.herokuapp.com/serve"
+	let dest_socket = prod_socket
+	
+	// EVENT LISTENERS
+	
+	// event listener (-ish) to determine server in operation
+	let check_server = function(){
+		s = new WebSocket("ws://localhost:3303/handshake")
+		s.onopen = function(){
+			s.send("hello")
+		}
+		s.onmessage = function(e){
+			var reply = e.data;
+			if (reply == "hi"){
+                dest_socket = dev_socket;
+			}
+		}
+	}
 	
 	// event listener on clear btn
 	$("#clear-btn").on("click", function(e){
@@ -22,7 +40,7 @@ $(document).ready(function(){
 		}
 		
 		// open a new websocket
-		socket = new WebSocket("ws://localhost:3303/serve")
+		socket = new WebSocket(dest_socket)
 		socket.onopen = function(){
 			var orderPacket = {"order": order}
 			socket.send(JSON.stringify(orderPacket))
@@ -41,6 +59,8 @@ $(document).ready(function(){
 			return;
 		}
 	})
+	
+	// APP FUNCTIONS
 	
 	let wrap = function(el, content, attrs){
 		// wrap content in given element tags
@@ -110,9 +130,9 @@ $(document).ready(function(){
 : ["packet"]})
 		$("#canvas").append(packet)
 	}
+	
+	// START APP
+	// on loading variables, functions and listeners
+	// call whatever needs to start the app
+	check_server();
 });
-
-// Wed, May 2, 2018 at 02:08
-// You can say I achieved what I set out to in creating
-// word scrambler thingy. Hacky much, but I've got it.
-// I'll revisit and I know I'll blow my mind.
