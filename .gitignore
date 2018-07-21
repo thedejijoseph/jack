@@ -9,3 +9,7 @@ assets/worker.log
 
 # ignore backup dir
 backup/
+
+# ignore app log file
+app/app.log
+
