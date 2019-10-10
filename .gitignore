@@ -20,7 +20,7 @@ venv/
 # except
 !app/assets/vendor/bootstrap/css/bootstrap.min.css
 !app/assets/vendor/bootstrap/js/bootstrap.bundle.min.js
-!app/assets/vendor/jquery/jquery.min.
+!app/assets/vendor/jquery/jquery.min.js
 
 !app/assets/custom/styles/jack.css
 !app/assets/custom/scripts/jack.js
