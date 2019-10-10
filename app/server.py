@@ -37,7 +37,7 @@ class BaseHandler(tornado.web.RequestHandler):
 class IndexHandler(BaseHandler):
 	@gen.coroutine
 	def get(self):
-		self.render("aindex.html")
+		self.render("index.html")
 		return
 
 class ServiceHandler(BaseHandler):

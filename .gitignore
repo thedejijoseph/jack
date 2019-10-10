@@ -10,8 +10,9 @@ backup/
 app/app.log
 assets/worker.log
 
-# ignore venv
+# ignore venv & vscode
 venv/
+.vscode/
 
 # ignore static files
 *.css
