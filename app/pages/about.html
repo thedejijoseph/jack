@@ -1,94 +1,35 @@
 <!DOCTYPE html>
 <html lang="en">
-	
-	<head>
-		<title>About Word Jack!</title>
-		<meta name="viewport" content="width=device-width, scale=1"/>
-		
-		<script src="{{ static_url("jquery/jquery-3.2.1.min.js") }}"></script>
-		<script src="{{ static_url("bs/js/bootstrap.min.js") }}"></script>
-		<script src="{{ static_url("js/jack.js") }}"></script>
-		
-		<link rel="stylesheet" href="{{static_url("bs/css/bootstrap.min.css") }}"/>
-		
-		<style>
-			#feedback{
-				margin: 12px 0px;
-				font-size: 1.5rem;
-				text-transform: uppercase;
-				color: #aaa;
-			}
-			
-			#order-box{
-				text-transform: uppercase;
-			}
-			
-			.btn{
-				padding: 5px 25px 5px 25px;
-			}
-			
-			table{
-				text-align: center;
-			}
-			
-			.blk-header{
-				text-transform: uppercase;
-				padding: 10px 5px;
-				background: #337ab3;
-			}
-			
-			.blk-header .tgl-btn{
-				width: 20px;
-				height: 20px;
-				display: inline-block;
-				margin: auto;
-				background: white;
-				float: right;
-			}
-			
-			.packet{
-				margin: 5px 0px;
-			}
-			
-			.about{
-				background: white;
-				margin-top: 30px;
-			}
-			
-			.title{
-			    color: #337ab3;
-			}
-			
-			.author{
-				
-			}
-			
-			.github{
-				text-decoration: underline;
-				
-			}
-		</style>
-	</head>
-	
-	<body>
-		<div class="container">
-			<div class="row">
-				
-				<div class="jumbotron about">
-					<h2 class="title">Word Jack!</h2>
-					
-					<p class="desc">so you would not have to rack your fine head when playing word cookies again, I put this thing together.</p>
-					
-					<p class="author">with love from moi, Deji Joseph <a class="github" href="https://github.com/wrecodde" target="_blank">@wrecodde</a></p>
-				</div>
-				
-			</div>
-		</div>
-		<script>
-			$(".blk-header").on("click", function(){
-				alert("sesame");
-			})
-		</script>
-	</body>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
+  <script src="{{ static_url('vendor/jquery/jquery.min.js') }}"></script>
+  <script src="{{ static_url('vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+  <script src="{{ static_url('custom/scripts/jack.js') }}"></script>
+  
+  <link rel="stylesheet" href="{{static_url('vendor/bootstrap/css/bootstrap.min.css') }}"/>
+  <link rel="stylesheet" href="{{ static_url('custom/styles/jack.css') }}">
+  <title>About Word Jack!</title>
+
+</head>
+<body class="bg-dark">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-md-6">
+        <nav class="navbar">
+          <a href="/" class="navbar-brand font-weight-bold">Home</a>
+				</nav>
+
+				<h2>About Word Jack!</h2>
+				<p class="text-muted">When Word Cookies was still a popular game (before all the clones), I thought to build something that generates all possible words from provided letters, yh.</p>
+				<p class="text-muted">Ran it from the terminal and when friends and family heard of my cheat, they wanted in. What better way to get my new web dev skills going?</p>
+				<hr class="my-4">
+				<p class="text-muted">You should have seen the first version of this app &#128527;</p>
+				<p class="text-muted">Made awesome by <a href="httpS://github.com/wrecodde">Deji Joseph</a></p>
+      </div>
+    </div>
+  </div>
+</body>
 </html>

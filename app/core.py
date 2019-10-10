@@ -78,7 +78,27 @@ def prepare(order):
 	
 	for i in range(2, size + 1):
 		yield [''.join(dish) for dish in scramble(order, i) if ''.join(dish) in word_bank]
-		
+
+def select(order):
+	size = len(order)
+	pool = []
+	
+	for i in range(2, size + 1):
+		pocket = ["".join(dish) for dish in scramble(order, i)]
+		pool.extend(pocket)
+	
+	pool = set(pool)
+	return pool - (pool - word_bank)
+
+def prep_test(order):
+	all = []
+	dish = prepare(order)
+	
+	for ct in dish:
+		all.extend(ct)
+	
+	return all
+
 def serve(bowls):
 	"""Re-orders argument alphabetically.
 	serve(arg) >> sorted_list

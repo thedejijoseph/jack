@@ -1,12 +1,12 @@
 
-import resource
-from resource import *
+import core
+from core import *
 
 
 def process(order):
 	""""""
 
-	timer = resource.Timer()
+	timer = core.Timer()
 	timer.start()
 	total_size = 0
 	
@@ -24,8 +24,8 @@ def process(order):
 		
 		# order is not cached
 		# and if order is not in cache its not larger than 9
-		tray = resource.prepare(order)
-		serving = resource.serve(tray)
+		tray = core.prepare(order)
+		serving = core.serve(tray)
 		timer.finish()
 		total_time = timer.time_taken()
 		total_size = len(serving)
@@ -35,16 +35,16 @@ def process(order):
 		return delivery
 	
 def real_time(order):
-	timer = resource.Timer()
+	timer = core.Timer()
 	timer.start()
 	total_count = 0
 	
 	order = order.lower()
 	if True:
 		# real time processing
-		tray = resource.prepare(order)
+		tray = core.prepare(order)
 		for dish in tray:
-			serving = resource.serve(dish)
+			serving = core.serve(dish)
 			
 			# because i cant get anything meaningful out of javascript
 			# with my phone, ill do the cutting here.
@@ -69,15 +69,15 @@ def real_time(order):
 def drive_in(order):
 	"""for access from the terminal"""
 	
-	timer = resource.Timer()
+	timer = core.Timer()
 	timer.start()
 	total_size = 0
 	
 	order = order.lower()
-	tray = resource.prepare(order)
+	tray = core.prepare(order)
 	for dish in tray:
 		if dish:
-			serving = resource.serve(dish)
+			serving = core.serve(dish)
 			
 			length = len(dish[0])
 			size = len(serving)

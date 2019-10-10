@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+  <script src="{{ static_url('vendor/jquery/jquery.min.js') }}"></script>
+  <script src="{{ static_url('vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+  <script src="{{ static_url('custom/scripts/jack.js') }}"></script>
+  
+  <link rel="stylesheet" href="{{static_url('vendor/bootstrap/css/bootstrap.min.css') }}"/>
+  <link rel="stylesheet" href="{{ static_url('custom/styles/jack.css') }}">
+  <title>Word Jack!</title>
+
+</head>
+<body class="bg-dark">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-4">
+        <nav class="navbar">
+          <a href="/" class="navbar-brand font-weight-bold">Jack</a>
+          <ul class="navbar-nav">
+            <li class="nav-item">
+              <a href="/about" class="nav-link text-white">About</a>
+            </li>
+          </ul>
+        </nav>
+
+        <div class="row">
+          <div class="col">
+            <form role="form">
+              <div class="form-group">
+                <input id="order-box" type="text" class="form-control" autocomplete="off">
+              </div>
+              <div>
+                <button id="order-btn" class="btn btn-primary px-4">Order</button>
+                <button id="clear-btn" class="btn btn-secondary px-4">Clear</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-8 mt-4 text-uppercase">
+        <div id="feedback">What would you like to have?</div>
+        <div id="canvas"></div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

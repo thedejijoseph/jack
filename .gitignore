@@ -1,15 +1,26 @@
 __pycache__/
 
-
 # ignore cache file
 app/assets/saved.txt
-
-# ignore worker log
-assets/worker.log
 
 # ignore backup dir
 backup/
 
-# ignore app log file
+# ignore log files
 app/app.log
+assets/worker.log
 
+# ignore venv
+venv/
+
+# ignore static files
+*.css
+*.js
+*.map
+# except
+!vendor/bootstrap/css/bootstrap.min.css
+!vendor/bootstrap/js/bootstrap.bundle.min.js
+!vendor/jquery/jquery.min.
+
+!custom/styles/jack.css
+!custom/scripts/jack.js

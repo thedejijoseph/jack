@@ -6,6 +6,7 @@ import tornado.websocket
 from tornado import gen
 
 import os
+import sys
 import json
 import time
 import logging
@@ -16,9 +17,15 @@ import jack
 
 # configure logging module
 log_format = "%(levelname)s: %(asctime)s | %(message)s"
-logging.basicConfig(filename="./app/app.log", level=logging.INFO, format=log_format)
-logger = logging.getLogger()
+log_file = "./app/app.log"
 
+to_file = logging.FileHandler(log_file)
+to_file.setFormatter(log_format)
+to_terminal = logging.StreamHandler(sys.stdout)
+to_terminal.setFormatter(log_format)
+
+logger = logging.Logger("root")
+logger.setLevel(10)
 
 from tornado.options import define
 define("port", default=3303, type=int)
@@ -30,8 +37,7 @@ class BaseHandler(tornado.web.RequestHandler):
 class IndexHandler(BaseHandler):
 	@gen.coroutine
 	def get(self):
-		self.render("index.html", port_no=tornado.options.options.port)
-		# do you see where the fix ended up going..
+		self.render("aindex.html")
 		return
 
 class ServiceHandler(BaseHandler):
@@ -50,7 +56,7 @@ class ServiceHandler(BaseHandler):
 class RealTimeServiceHandler(tornado.websocket.WebSocketHandler):
 	def open(self):
 		# log connecting client
-		logger.info("socket client-server connection established")
+		logger.info("socket: client-server connection established")
 		pass
 	
 	def on_message(self, message):

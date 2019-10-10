@@ -56,22 +56,22 @@
 		<div class="container">
 			<div class="row">
 				
-				<div class="col-lg-4">
+				<div class="col-lg-4 col-sm-12">
 					<div class="row">
-						<div class="col-lg-12" style="background: #337ab7;">
+						<div class="col" style="background: #337ab7;">
 							<nav class="navbar" style="margin-top: 10px;" role="navigation">
 								<div class="navbar-header">
-									<a class="navbar-brand" style="color: white; padding-left: 0px;">
+									<a class="navbar-brand text-weight-bold" style="color: white;">
 										Word Jack
 									</a>
-									<button type="button" class="btn btn-secondary navbar-btn" onclick="window.location='/about'">About</button>
+									<button type="button" class="btn navbar-btn" onclick="window.location='/about'">About</button>
 								</div>
 							</nav>
 						</div>
 					</div>
 					
 					<div class="row">
-						<div class="col-lg-12">
+						<div class="col">
 							<form role="form">
 								<div class="form-group">
 									<input id="order-box" type="text" class="form-control" autocomplete="off">
@@ -85,7 +85,7 @@
 					</div>
 				</div>
 				
-				<div class="col-lg-8">
+				<div class="col-lg-8 col-sm-12">
 					<div id="feedback">
 						what would you like to have 
 					</div>
@@ -97,11 +97,6 @@
 				
 			</div>
 		</div>
-		
-		<script type="application/javascript">
-		    // pass the port number to jack.js
-			let port_no = {{port_no}}
-		</script>
 	</body>
 
 </html>

@@ -3,5 +3,5 @@
 import sys
 sys.path = ["app"] + sys.path
 
-from .index import start
-start = index.start
+import server
+start = server.start
