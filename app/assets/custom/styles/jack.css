@@ -1,0 +1,25 @@
+#order-box{
+  text-transform: uppercase;
+}
+
+table{
+  text-align: center;
+}
+
+.blk-header{
+  text-transform: uppercase;
+  padding: 10px 5px;
+  background: #337ab3;
+}
+
+.blk-header .tgl-btn{
+  width: 20px;
+  height: 20px;
+  margin: auto;
+  background: white;
+  float: right;
+}
+
+.packet{
+  margin: 5px 0px;
+}

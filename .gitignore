@@ -18,9 +18,9 @@ venv/
 *.js
 *.map
 # except
-!vendor/bootstrap/css/bootstrap.min.css
-!vendor/bootstrap/js/bootstrap.bundle.min.js
-!vendor/jquery/jquery.min.
+!app/assets/vendor/bootstrap/css/bootstrap.min.css
+!app/assets/vendor/bootstrap/js/bootstrap.bundle.min.js
+!app/assets/vendor/jquery/jquery.min.
 
-!custom/styles/jack.css
-!custom/scripts/jack.js
+!app/assets/custom/styles/jack.css
+!app/assets/custom/scripts/jack.js
